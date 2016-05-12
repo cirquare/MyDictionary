@@ -13,14 +13,14 @@ class WordReview extends Component {
       test: []
     };
   }
-  
+
   handleTest(test){
-    const {topic, selection1, selection2, selection3} = test;
+    const {topic} = test;
     return (
         <div>
-          <h4>{topic} {selection1} {selection2} {selection3}</h4>
+          <h4>{topic} {test.selection[0].title} {test.selection[1].title} {test.selection[2].title}</h4>
         </div>
-           )
+        )
   }
   setWordList(temp){
     this.setState({WordList:temp});
@@ -36,9 +36,11 @@ class WordReview extends Component {
       }
       this.setState({
         test: test.concat({topic: wordcards[index[0]].name,
-                            selection1: wordcards[index[0]].trans,
-                            selection2: wordcards[index[1]].trans,
-                            selection3: wordcards[index[2]].trans})
+          selection: [
+            {title: wordcards[index[0]].trans,c: true},
+            {title: wordcards[index[1]].trans,c: false},
+            {title: wordcards[index[2]].trans,c: false}
+          ]})
       })
     }
   }
@@ -47,9 +49,9 @@ class WordReview extends Component {
     const {name, trans} = wordcard;
     return (
         <div>
-          <li>
-             <h4>{name} {trans}</h4>
-          </li>
+        <li>
+        <h4>{name} {trans}</h4>
+        </li>
         </div>
         )
   }
@@ -66,8 +68,8 @@ class WordReview extends Component {
     const {wordcards} = this.state.WordList;
     return (
         <div className="container">
-          <h1>Word Review Test</h1>
-          {test.map(this.handleTest.bind(this),this)}
+        <h1>Word Review Test</h1>
+        {test.map(this.handleTest.bind(this),this)}
         </div>
         );
   }
