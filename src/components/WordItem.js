@@ -10,7 +10,6 @@ class WordItem extends React.Component {
             <input 
               className = "toggle"
               type = "checkbox"
-              checked = {completeYet}
               onChange = {(event) => onChange(event, index)}
             />
             <label>{title}</label>
