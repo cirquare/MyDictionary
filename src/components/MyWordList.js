@@ -40,6 +40,7 @@ class MyWordList extends Component {
     return (
         <div className="container">
           <h1>My Word List</h1>
+          <Link to ={'/wordreview'}><h4>Word Review</h4></Link>
           {wordcards.map(this.handleWordList.bind(this))}
         </div>
         );
