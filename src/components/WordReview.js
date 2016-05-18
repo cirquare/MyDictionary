@@ -44,23 +44,21 @@ class WordReview extends Component {
       })
     }
   }
-
-  handleWordList(wordcard){
-    const {name, trans} = wordcard;
-    return (
+  handleSelection(item, i){
+    return(
         <div>
-        <li>
-        <h4>{name} {trans}</h4>
-        </li>
+          <input
+            type = "checkbox"
+            checked = {item.c}
+          />
+          <label>{item.title}</label>
         </div>
-        )
+          );
   }
-
   componentDidMount() {
     fetch('/api/mywordlist')
       .then(function(res){return res.json()})
       .then(this.setWordList.bind(this));
-
   }
 
   render() {
@@ -68,12 +66,15 @@ class WordReview extends Component {
     const {wordcards} = this.state.WordList;
     return (
         <div className="container">
-        <h1>Word Review Test</h1>
-        {test.map(this.handleTest.bind(this),this)}
+          <h1>Word Review Test</h1>
+          {test.map(this.handleTest.bind(this),this)}
+          <ul>{test[0].selection.map(this.handleSelection,this)}</ul>
         </div>
         );
   }
 }
+
+
 WordReview.propTypes = { test: React.PropTypes.array}
 
 export default WordReview;
