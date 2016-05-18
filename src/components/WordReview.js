@@ -23,6 +23,7 @@ class WordReview extends Component {
     let countSelection = 0;
     let index = [0,0,0];
     let checkRepeat = 0;
+    let shuffleSelection = 0;
     for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
       const {WordList, test} = this.state;
       const {wordcards} = WordList;
@@ -38,13 +39,16 @@ class WordReview extends Component {
           }
         }
       }
+      shuffleSelection = Math.floor(Math.random()*3);
       this.setState({
-        test: test.concat({topic: wordcards[index[0]].name,
+        test: test.concat({topic: wordcards[index[shuffleSelection]].name,
           selection: [
           {title: wordcards[index[0]].trans,c: false,testNumber:countTestNumber},
           {title: wordcards[index[1]].trans,c: false,testNumber:countTestNumber},
           {title: wordcards[index[2]].trans,c: false,testNumber:countTestNumber}
-          ]})
+          ],
+          answer: shuffleSelection
+        })
       })
     }
   }
@@ -86,7 +90,8 @@ class WordReview extends Component {
     let score_temp = 0;
     let countTopic = 0;
     for(countTopic = 0; countTopic<3; countTopic++){
-      if(test[countTopic].selection[0].c)score_temp = score_temp + 1;
+      const {selection, answer} = test[countTopic];
+      if(selection[answer].c)score_temp = score_temp + 1;
     }
     if(score_temp === 0)score_temp = 0;
     else if(score_temp === 1)score_temp = 60;
