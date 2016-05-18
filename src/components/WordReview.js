@@ -17,6 +17,8 @@ class WordReview extends Component {
 
   setWordList(temp){
     this.setState({WordList:temp});
+  }
+  setTest(temp){
     let countTestNumber = 0;
     let countSelection = 0;
     let index = [0,0,0];
@@ -39,9 +41,9 @@ class WordReview extends Component {
       this.setState({
         test: test.concat({topic: wordcards[index[0]].name,
           selection: [
-            {title: wordcards[index[0]].trans,c: false,testNumber:countTestNumber},
-            {title: wordcards[index[1]].trans,c: false,testNumber:countTestNumber},
-            {title: wordcards[index[2]].trans,c: false,testNumber:countTestNumber}
+          {title: wordcards[index[0]].trans,c: false,testNumber:countTestNumber},
+          {title: wordcards[index[1]].trans,c: false,testNumber:countTestNumber},
+          {title: wordcards[index[2]].trans,c: false,testNumber:countTestNumber}
           ]})
       })
     }
@@ -66,7 +68,7 @@ class WordReview extends Component {
           c = {c}
           onChange = {this.handleSelectionChecked.bind(this)}
         />
-          );
+        );
   }
   handleSelectionChecked(event, i, testNumber){
     const {test} = this.state;
@@ -99,7 +101,8 @@ class WordReview extends Component {
   componentDidMount() {
     fetch('/api/mywordlist')
       .then(function(res){return res.json()})
-      .then(this.setWordList.bind(this));
+      .then(this.setWordList.bind(this))
+      .then(this.setTest.bind(this))
   }
 
   render() {
