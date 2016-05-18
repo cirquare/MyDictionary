@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import 'babel-polyfill';
 import fetch from 'isomorphic-fetch';
-
+import Selection from './Selection'
 import './MyWordList.css';
 
 class WordReview extends Component {
@@ -48,9 +48,10 @@ class WordReview extends Component {
   }
   handleTest(test, i){
     const {topic, selection} = test;
+    const questionNumber = selection[0].testNumber + 1;
     return(
         <div>
-          <h4>{topic}</h4>
+          <h4>Question {questionNumber}: {topic}</h4>
           <ul>{selection.map(this.handleSelectionList,this)}</ul>
         </div>
         );
@@ -107,33 +108,19 @@ class WordReview extends Component {
     return (
         <div className="container">
           <h1>Word Review Test</h1>
-          {test.map(this.handleTest,this)}
-          <button onClick = {this.handleScore.bind(this)}>submit</button>
-          <h4>{score}</h4>
+          <small>Please select the correct translation to the following words.</small>
+          <section>{test.map(this.handleTest,this)}</section>
+          <button type = "button" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button>
+          <h4>Score: {score}</h4>
+          <Link to ={'/'}><h4>Back to List</h4></Link>
         </div>
         );
   }
 }
 
-
-WordReview.propTypes = { test: React.PropTypes.array}
-
-class Selection extends Component {
-  render(){
-    const {index, testNumber, title, c, onChange} = this.props;
-    let a = 0;
-    if(c)a = 1;
-    else a = 0;
-    return(
-        <div>
-          <input
-            type = "checkbox"
-            checked = {c}
-            onChange = {function(event){return onChange(event, index, testNumber)}}
-          />
-          <label>{title}</label>
-        </div>
-        );
-  }
+WordReview.propTypes = { 
+  test: React.PropTypes.array,
+  score: React.PropTypes.number
 }
+
 export default WordReview;
