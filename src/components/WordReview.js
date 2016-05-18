@@ -27,24 +27,33 @@ class WordReview extends Component {
     let countTestNumber = 0;
     let countSelection = 0;
     let index = [0,0,0];
+    let checkRepeat = 0;
     for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
       const {WordList, test} = this.state;
       const {wordcards} = WordList;
       const length = wordcards.length;
       for (countSelection = 0; countSelection<3; countSelection ++){
         index[countSelection] = Math.floor(Math.random()*length);
+        if(countSelection>0){
+          for(checkRepeat = 0; checkRepeat<countSelection; checkRepeat++){
+            if(index[countSelection] === index[checkRepeat]){
+              countSelection = countSelection-1;
+              break;
+            }
+          }
+        }
       }
       this.setState({
         test: test.concat({topic: wordcards[index[0]].name,
           selection: [
-            {title: wordcards[index[0]].trans,c: true},
+            {title: wordcards[index[0]].trans,c: false},
             {title: wordcards[index[1]].trans,c: false},
             {title: wordcards[index[2]].trans,c: false}
           ]})
       })
     }
   }
-  handleSelection(item, i){
+  handleSelection(item, i, i_test){
     return(
         <div>
           <input
@@ -56,10 +65,10 @@ class WordReview extends Component {
         </div>
           );
   }
-  handleSelectionChecked(event, i){
+  handleSelectionChecked(event, i, i_test){
     const {test} = this.state;
-    test[0].selection.splice(i,1,{
-      title: test[0].selection[i].title,
+    test[i_test].selection.splice(i,1,{
+      title: test[i_test].selection[i].title,
       c: event.target.checked
     });
     this.setState({
@@ -79,7 +88,9 @@ class WordReview extends Component {
         <div className="container">
           <h1>Word Review Test</h1>
           {test.map(this.handleTest.bind(this),this)}
-          <ul>{test[0].selection.map(this.handleSelection,this)}</ul>
+          <ul>{test[0].selection.map(this.handleSelection,this,0)}</ul>
+          <ul>{test[1].selection.map(this.handleSelection,this,1)}</ul>
+          <ul>{test[2].selection.map(this.handleSelection,this,2)}</ul>
         </div>
         );
   }
