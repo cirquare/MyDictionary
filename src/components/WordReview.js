@@ -11,18 +11,10 @@ class WordReview extends Component {
     this.state = {
       WordList: {wordcards:[]},
       test: [],
-      score: 0
+      score: 0,
     };
   }
 
-  handleTest(test, i){
-    const {topic, selection} = test;
-    return (
-        <div>
-          <h4>{topic} {selection[0].title} {selection[1].title} {selection[2].title}</h4>
-        </div>
-        )
-  }
   setWordList(temp){
     this.setState({WordList:temp});
     let countTestNumber = 0;
@@ -47,56 +39,56 @@ class WordReview extends Component {
       this.setState({
         test: test.concat({topic: wordcards[index[0]].name,
           selection: [
-            {title: wordcards[index[0]].trans,c: false},
-            {title: wordcards[index[1]].trans,c: false},
-            {title: wordcards[index[2]].trans,c: false}
+            {title: wordcards[index[0]].trans,c: false,testNumber:countTestNumber},
+            {title: wordcards[index[1]].trans,c: false,testNumber:countTestNumber},
+            {title: wordcards[index[2]].trans,c: false,testNumber:countTestNumber}
           ]})
       })
     }
   }
-  handleTest2(test, i){
+  handleTest(test, i){
     const {topic, selection} = test;
     return(
         <div>
           <h4>{topic}</h4>
-          <ul>{selection.map(this.handleSelection,this, i)}</ul>
+          <ul>{selection.map(this.handleSelectionList,this)}</ul>
         </div>
         );
   }
-  handleSelection(oneSelection, i, i_topic){
-    const {title, c} = oneSelection;
+  handleSelectionList(oneSelection, i){
+    const {title, c, testNumber} = oneSelection;
     return(
-        <div>
-          <input
-            type = "checkbox"
-            checked = {c}
-            onChange = {this.handleSelectionChecked.bind(this, i_topic)}
-          />
-          <label>{title}</label>
-        </div>
+        <Selection
+          index = {i}
+          testNumber = {testNumber}
+          title = {title}
+          c = {c}
+          onChange = {this.handleSelectionChecked.bind(this)}
+        />
           );
   }
-  handleSelectionChecked(event, i, i_topic){
+  handleSelectionChecked(event, i, testNumber){
     const {test} = this.state;
-    test[i_topic].selection.splice(i,1,{
-      title: test[i_topic].selection[i].title,
-      c: event.target.checked
+    test[testNumber].selection.splice(i,1,{
+      title: test[testNumber].selection[i].title,
+      c: event.target.checked,
+      testNumber: testNumber
     });
     this.setState({
       test: test
     });
   }
-  handleAnswer(){
+  handleScore(){
     const {test, score} = this.state;
     let score_temp = 0;
     let countTopic = 0;
     for(countTopic = 0; countTopic<3; countTopic++){
-      if(test[countTopic].selection[0].c)score_temp++;
+      if(test[countTopic].selection[0].c)score_temp = score_temp + 1;
     }
     if(score_temp === 0)score_temp = 0;
     else if(score_temp === 1)score_temp = 60;
     else if(score_temp === 2)score_temp = 80;
-    else if(score_temp === 2)score_temp = 100;
+    else if(score_temp === 3)score_temp = 100;
     else score_temp = -1;
 
     this.setState({
@@ -116,8 +108,7 @@ class WordReview extends Component {
         <div className="container">
           <h1>Word Review Test</h1>
           {test.map(this.handleTest,this)}
-          {test.map(this.handleTest2,this)}
-          <button onclick = {this.handleAnswer.bind(this)}>submit</button>
+          <button onClick = {this.handleScore.bind(this)}>submit</button>
           <h4>{score}</h4>
         </div>
         );
@@ -127,4 +118,22 @@ class WordReview extends Component {
 
 WordReview.propTypes = { test: React.PropTypes.array}
 
+class Selection extends Component {
+  render(){
+    const {index, testNumber, title, c, onChange} = this.props;
+    let a = 0;
+    if(c)a = 1;
+    else a = 0;
+    return(
+        <div>
+          <input
+            type = "checkbox"
+            checked = {c}
+            onChange = {function(event){return onChange(event, index, testNumber)}}
+          />
+          <label>{title}</label>
+        </div>
+        );
+  }
+}
 export default WordReview;
