@@ -28,15 +28,10 @@ class WordReview extends Component {
       const {WordList, test} = this.state;
       const {wordcards} = WordList;
       const length = wordcards.length;
-      for (countSelection = 0; countSelection<3; countSelection ++){
-        index[countSelection] = Math.floor(Math.random()*length);
-        if(countSelection>0){
-          for(checkRepeat = 0; checkRepeat<countSelection; checkRepeat++){
-            if(index[countSelection] === index[checkRepeat]){
-              countSelection = countSelection-1;
-              break;
-            }
-          }
+      index = [0,0,0];
+      while(index[0] === index[1] || index[1] === index[2] || index[0] === index[2]){
+        for (countSelection = 0; countSelection<3; countSelection ++){
+          index[countSelection] = Math.floor(Math.random()*length);
         }
       }
       shuffleSelection = Math.floor(Math.random()*3);
