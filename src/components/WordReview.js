@@ -50,10 +50,21 @@ class WordReview extends Component {
           <input
             type = "checkbox"
             checked = {item.c}
+            onChange = {this.handleSelectionChecked.bind(this)}
           />
           <label>{item.title}</label>
         </div>
           );
+  }
+  handleSelectionChecked(event, i){
+    const {test} = this.state;
+    test[0].selection.splice(i,1,{
+      title: test[0].selection[i].title,
+      c: event.target.checked
+    });
+    this.setState({
+      test: test
+    });
   }
   componentDidMount() {
     fetch('/api/mywordlist')
