@@ -5,6 +5,21 @@ const api = require('./api');
 
 const app = express();
 
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : '127.0.0.1',
+  user     : 'root',
+  password : 'ruey61312'
+});
+ 
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+  console.log('connected as id ' + connection.threadId);
+});
+
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
