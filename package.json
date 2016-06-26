@@ -41,5 +41,13 @@
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.10.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cirquare/MyDictionary.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cirquare/MyDictionary/issues"
+  },
+  "homepage": "https://github.com/cirquare/MyDictionary#readme"
 }
