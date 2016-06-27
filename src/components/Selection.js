@@ -6,7 +6,7 @@ class Selection extends Component {
   render(){
     const {index, highlight, testNumber, selectedValue,
       title, onChange, checked, disabled} = this.props;
-    if(highlight){
+    if(highlight && disabled){
       return(
         <div>
           <input

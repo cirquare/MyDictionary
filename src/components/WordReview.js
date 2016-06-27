@@ -41,7 +41,7 @@ class WordReview extends Component {
           answer: shuffleSelection,
           submitted: false,
           highlightQ: false,
-          selectedValue: wordcards[index[0]].trans,
+          selectedValue: '',
           selection: [
             {highlight:false,title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
             {highlight:false,title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
@@ -52,15 +52,24 @@ class WordReview extends Component {
     }
   }
   handleTest(test, i){
-    const {topic, highlightQ, selection, selectedValue} = test;
+    const {topic, submitted, highlightQ, selection, selectedValue} = test;
     const questionNumber = i + 1;
-    if(highlightQ){
-      return(
-        <div>
-          <h4 className = 'text-danger'>Question {questionNumber}: {topic}</h4>
-          <ul>{selection.map(this.handleSelectionList,this)}</ul>
-        </div>
-        );
+    if(submitted){
+      if(highlightQ){
+        return(
+          <div>
+            <h4 className = 'text-danger'>Question {questionNumber}: {topic}</h4>
+            <ul>{selection.map(this.handleSelectionList,this)}</ul>
+          </div>
+          );
+      }else{
+        return(
+          <div>
+            <h4>Question {questionNumber}: {topic}</h4>
+            <ul>{selection.map(this.handleSelectionList,this)}</ul>
+          </div>
+          );
+      }
     }else{
       return(
         <div>
@@ -157,7 +166,7 @@ class WordReview extends Component {
     const {wordcards} = this.state.WordList;
     return (
         <div className="container">
-          <h1>Word Review Test</h1>
+          <h1>Selection Test</h1>
           <small>Please select the correct translation to the following words.</small>
           <section>{test.map(this.handleTest,this)}</section>
           <button type = "button" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button>
