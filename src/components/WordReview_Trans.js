@@ -38,30 +38,50 @@ class WordReview_Trans extends Component {
             const { wordcards } = WordList;
             const length = wordcards.length;
             this.setState({
-                test: test.concat({topic: wordcards[index[countTestNumber]].trans,
-                                  testID: countTestNumber+1,
-                                  answer: wordcards[index[countTestNumber]].name,
-                                  userAns: "",
+                test: test.concat({
+                  topic: wordcards[index[countTestNumber]].trans,
+                  testID: countTestNumber+1,
+                  highlightQ: false,
+                  submitted: false,
+                  answer: wordcards[index[countTestNumber]].name,
+                  userAns: "",
                 })
             })
         }
     }
 
     handleTransTest(test,i){
-        const {topic,testID,userAns} = test;
+        const {topic,testID,userAns,submitted,highlightQ} = test;
         const questionNumber = test.testID;
-        return(
+        if(submitted && highlightQ){
+          return(
             <div>
-            <h4>Question {questionNumber} : {topic}</h4>
-            <form name="formName">
-            <Translation
-                value = {userAns}
-                i = {i}
-                onChange = {this.handleChange.bind(this)}
-            />
-            </form>
+              <h4 className = 'text-warning'>Question {questionNumber} : {topic}</h4>
+              <form name="formName">
+                <Translation
+                  value = {userAns}
+                  i = {i}
+                  disabled = {submitted}
+                  onChange = {this.handleChange.bind(this)}
+                />
+              </form>
             </div>
-        )
+          )
+        }else{
+          return(
+            <div>
+              <h4>Question {questionNumber} : {topic}</h4>
+              <form name="formName">
+                <Translation
+                  value = {userAns}
+                  i = {i}
+                  disabled = {submitted}
+                  onChange = {this.handleChange.bind(this)}
+                />
+              </form>
+            </div>
+          )
+        }
     }
 
     handleChange(event,i){
@@ -69,6 +89,8 @@ class WordReview_Trans extends Component {
         const {testID} = test;
         test.splice(i,1,{
             topic: test[i].topic,
+            highlightQ: test[i].highlightQ,
+            submitted: test[i].submitted,
             testID: test[i].testID,
             answer: test[i].answer,
             userAns: event.target.value
@@ -83,7 +105,27 @@ class WordReview_Trans extends Component {
         let score_temp = 0;
         let countTestNumber = 0;
         for(countTestNumber = 0; countTestNumber< 3; countTestNumber++){
-            if(test[countTestNumber].userAns === test[countTestNumber].answer)  score_temp++;
+            if(test[countTestNumber].userAns === test[countTestNumber].answer){
+              score_temp++;
+              test.splice(countTestNumber,1,{
+                topic: test[countTestNumber].topic,
+                testID: test[countTestNumber].testID,
+                highlightQ: false,
+                submitted: true,
+                answer: test[countTestNumber].answer,
+                userAns: test[countTestNumber].userAns,
+              })
+            }else{
+              test.splice(countTestNumber,1,{
+                topic: test[countTestNumber].topic,
+                testID: test[countTestNumber].testID,
+                highlightQ: true,
+                submitted: true,
+                answer: test[countTestNumber].answer,
+                userAns: test[countTestNumber].userAns,
+              })
+              
+            }
         }
         if(score_temp === 0)score_temp = 0;
         else if(score_temp === 1)score_temp = 60;

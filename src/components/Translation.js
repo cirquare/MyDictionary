@@ -4,14 +4,15 @@ import './MyWordList.css';
 
 class Translation extends Component {
   render(){
-    const {value,onChange,i} = this.props;
+    const {value,onChange,i,disabled} = this.props;
     return(
         <div>
-          <form name ="formName">
+          <form name ='formName'>
             <input
-              type = "text"
-              size = "20"
+              type = 'text'
+              size = '20'
               placeholder='請輸入相應英文'
+              disabled = {disabled}
               value = {value}
               onChange = {function(event){return onChange(event,i)}}
             />
