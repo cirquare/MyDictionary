@@ -39,6 +39,7 @@ class WordReview extends Component {
         test: test.concat({
           topic: wordcards[index[shuffleSelection]].name,
           answer: shuffleSelection,
+          submitted: false,
           highlightQ: false,
           selectedValue: wordcards[index[0]].trans,
           selection: [
@@ -71,13 +72,14 @@ class WordReview extends Component {
   }
   handleSelectionList(oneSelection,i){
     const {title, testNumber, checked, highlight} = oneSelection;
-    const {selectedValue} = this.state.test[testNumber];
+    const {selectedValue, submitted} = this.state.test[testNumber];
     return(
         <Selection
           index = {i}
           highlight = {highlight}
           testNumber = {testNumber}
           checked = {checked}
+          disabled = {submitted}
           selectedValue = {selectedValue}
           title = {title}
           onChange = {this.handleSelectionChecked.bind(this)}
@@ -89,6 +91,7 @@ class WordReview extends Component {
     //test[testNumber].selectedValue = event.target.checked;
     test.splice(testNumber,1,{
       topic: test[testNumber].topic,
+      submitted: test[testNumber].submitted,
       highlightQ: test[testNumber].highlightQ,
       answer: test[testNumber].answer,
       selectedValue: event.target.value,
@@ -106,9 +109,18 @@ class WordReview extends Component {
       const {selectedValue, answer} = test[countTopic];
       if(selectedValue === test[countTopic].selection[answer].title){
         score_temp = score_temp + 1;
+        test.splice(countTopic,1,{
+          topic: test[countTopic].topic,
+          submitted: true,
+          highlightQ: false,
+          answer: test[countTopic].answer,
+          selectedValue: test[countTopic].selectedValue,
+          selection: test[countTopic].selection
+        });
       }else{
         test.splice(countTopic,1,{
           topic: test[countTopic].topic,
+          submitted: true,
           highlightQ: true,
           answer: test[countTopic].answer,
           selectedValue: test[countTopic].selectedValue,

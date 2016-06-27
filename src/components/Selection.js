@@ -5,7 +5,7 @@ import './MyWordList.css';
 class Selection extends Component {
   render(){
     const {index, highlight, testNumber, selectedValue,
-      title, onChange, checked} = this.props;
+      title, onChange, checked, disabled} = this.props;
     if(highlight){
       return(
         <div>
@@ -13,6 +13,7 @@ class Selection extends Component {
             type = "radio"
             name = {testNumber}
             value = {title}
+            disabled = {disabled}
             onChange = {function(event){return onChange(event,index,testNumber)}}
           />
           <label><u>{title}</u></label>
@@ -25,6 +26,7 @@ class Selection extends Component {
             type = "radio"
             name = {testNumber}
             value = {title}
+            disabled = {disabled}
             onChange = {function(event){return onChange(event,index,testNumber)}}
           />
           <label>{title}</label>

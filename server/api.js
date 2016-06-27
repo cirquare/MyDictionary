@@ -18,18 +18,8 @@ const WordList = {wordcards :[
     testTime: 0
   },
   {
-    name: 'garment',
-    trans: '衣服；服裝',
-    testTime: 0
-  },
-  {
     name: 'juvenile',
     trans: '少年的，年輕的',
-    testTime: 0
-  },
-  {
-    name: 'garment',
-    trans: '衣服；服裝',
     testTime: 0
   },
   {
