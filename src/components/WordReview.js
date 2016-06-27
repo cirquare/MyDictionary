@@ -36,20 +36,22 @@ class WordReview extends Component {
       }
       shuffleSelection = Math.floor(Math.random()*3);
       this.setState({
-        test: test.concat({topic: wordcards[index[shuffleSelection]].name,
+        test: test.concat({
+          topic: wordcards[index[shuffleSelection]].name,
+          answer: wordcards[index[shuffleSelection]].trans,
+          selectedValue: wordcards[index[0]].trans,
           selection: [
-          {title: wordcards[index[0]].trans,c: false,testNumber:countTestNumber},
-          {title: wordcards[index[1]].trans,c: false,testNumber:countTestNumber},
-          {title: wordcards[index[2]].trans,c: false,testNumber:countTestNumber}
-          ],
-          answer: shuffleSelection
+            {title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
+            {title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
+            {title: wordcards[index[2]].trans,checked:false,testNumber:countTestNumber}
+          ]
         })
       })
     }
   }
   handleTest(test, i){
-    const {topic, selection} = test;
-    const questionNumber = selection[0].testNumber + 1;
+    const {topic, selection, selectedValue} = test;
+    const questionNumber = i + 1;
     return(
         <div>
           <h4>Question {questionNumber}: {topic}</h4>
@@ -57,25 +59,40 @@ class WordReview extends Component {
         </div>
         );
   }
-  handleSelectionList(oneSelection, i){
-    const {title, c, testNumber} = oneSelection;
+  handleSelectionList(oneSelection,i){
+    const {title, testNumber, checked} = oneSelection;
+    const {selectedValue} = this.state.test[testNumber];
     return(
         <Selection
           index = {i}
           testNumber = {testNumber}
+          checked = {checked}
+          selectedValue = {selectedValue}
           title = {title}
-          c = {c}
           onChange = {this.handleSelectionChecked.bind(this)}
         />
         );
   }
   handleSelectionChecked(event, i, testNumber){
     const {test} = this.state;
-    test[testNumber].selection.splice(i,1,{
-      title: test[testNumber].selection[i].title,
-      c: event.target.checked,
-      testNumber: testNumber
+    //test[testNumber].selectedValue = event.target.checked;
+    test.splice(testNumber,1,{
+      topic: test[testNumber].topic,
+      answer: test[testNumber].answer,
+      selectedValue: event.target.value,
+      selection: test[testNumber].selection
     });
+    //console.log(test[testNumber].selectedValue);
+    //console.log(test[testNumber].answer);
+    /*
+    test[testNumber].selection.splice(i,1,{
+      title:test[testNumber].selection[i].title,
+      checked:event.target.checked,
+      testNumber:test[testNumber].selection[i].testNumber
+    })
+    console.log(test[testNumber].selection[i].checked);
+    console.log(test[testNumber].selection[0].checked);
+    */
     this.setState({
       test: test
     });
@@ -85,8 +102,12 @@ class WordReview extends Component {
     let score_temp = 0;
     let countTopic = 0;
     for(countTopic = 0; countTopic<3; countTopic++){
-      const {selection, answer} = test[countTopic];
-      if(selection[answer].c)score_temp = score_temp + 1;
+      const {selectedValue, answer} = test[countTopic];
+      if(selectedValue === answer){
+        score_temp = score_temp + 1;
+      }else{
+        
+      }
     }
     if(score_temp === 0)score_temp = 0;
     else if(score_temp === 1)score_temp = 60;
@@ -121,7 +142,8 @@ class WordReview extends Component {
   }
 }
 
-WordReview.propTypes = { 
+WordReview.propTypes = {
+  WordList: React.PropTypes.object,
   test: React.PropTypes.array,
   score: React.PropTypes.number
 }

@@ -4,16 +4,15 @@ import './MyWordList.css';
 
 class Selection extends Component {
   render(){
-    const {index, testNumber, title, c, onChange} = this.props;
-    let a = 0;
-    if(c)a = 1;
-    else a = 0;
+    const {index, testNumber, selectedValue,
+      title, onChange, checked} = this.props;
     return(
         <div>
           <input
-            type = "checkbox"
-            checked = {c}
-            onChange = {function(event){return onChange(event, index, testNumber)}}
+            type = "radio"
+            name = {testNumber}
+            value = {title}
+            onChange = {function(event){return onChange(event,index,testNumber)}}
           />
           <label>{title}</label>
         </div>
