@@ -38,12 +38,13 @@ class WordReview extends Component {
       this.setState({
         test: test.concat({
           topic: wordcards[index[shuffleSelection]].name,
-          answer: wordcards[index[shuffleSelection]].trans,
+          //answer: wordcards[index[shuffleSelection]].trans,
+          answer: shuffleSelection,
           selectedValue: wordcards[index[0]].trans,
           selection: [
-            {title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
-            {title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
-            {title: wordcards[index[2]].trans,checked:false,testNumber:countTestNumber}
+            {highlight:false,title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
+            {highlight:false,title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
+            {highlight:false,title: wordcards[index[2]].trans,checked:false,testNumber:countTestNumber}
           ]
         })
       })
@@ -60,11 +61,12 @@ class WordReview extends Component {
         );
   }
   handleSelectionList(oneSelection,i){
-    const {title, testNumber, checked} = oneSelection;
+    const {title, testNumber, checked, highlight} = oneSelection;
     const {selectedValue} = this.state.test[testNumber];
     return(
         <Selection
           index = {i}
+          highlight = {highlight}
           testNumber = {testNumber}
           checked = {checked}
           selectedValue = {selectedValue}
@@ -82,17 +84,6 @@ class WordReview extends Component {
       selectedValue: event.target.value,
       selection: test[testNumber].selection
     });
-    //console.log(test[testNumber].selectedValue);
-    //console.log(test[testNumber].answer);
-    /*
-    test[testNumber].selection.splice(i,1,{
-      title:test[testNumber].selection[i].title,
-      checked:event.target.checked,
-      testNumber:test[testNumber].selection[i].testNumber
-    })
-    console.log(test[testNumber].selection[i].checked);
-    console.log(test[testNumber].selection[0].checked);
-    */
     this.setState({
       test: test
     });
@@ -103,10 +94,15 @@ class WordReview extends Component {
     let countTopic = 0;
     for(countTopic = 0; countTopic<3; countTopic++){
       const {selectedValue, answer} = test[countTopic];
-      if(selectedValue === answer){
+      if(selectedValue === test[countTopic].selection[answer].title){
         score_temp = score_temp + 1;
       }else{
-        
+        test[countTopic].selection.splice(answer,1,{
+          highlight:true,
+          title:test[countTopic].selection[answer].title,
+          checked:test[countTopic].selection[answer].checked,
+          testNumber:test[countTopic].selection[answer].testNumber
+        }) 
       }
     }
     if(score_temp === 0)score_temp = 0;
@@ -116,6 +112,7 @@ class WordReview extends Component {
     else score_temp = -1;
 
     this.setState({
+      test: test,
       score: score_temp
     });
   }
