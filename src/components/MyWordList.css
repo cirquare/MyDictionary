@@ -1,0 +1,38 @@
+.homepage-btn {
+    color: red;
+    font-size:15px;
+    font-family:sans-serif;
+    background: #FFFFBB;
+    border:2px #FFAC55 solid;
+    border-radius:10px;
+    height: 23px;
+    text-align: center;
+    width: 150px;
+}
+
+.homepage-btn-crew {
+    padding-left:240px;
+    padding-top:10px;
+    padding-bottom:20px;
+}
+
+.homepage-title {
+    color: #0000AA;
+    position: relative;
+    padding-left:450px;
+    font-family: cursive;
+    text-align: justify;
+    text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+}
+
+.wordlist-trans {
+    color: #770077;
+    font-family: Mircosoft JhengHei;
+    position: absoulte;
+}
+
+
+.wordlist-english {
+    color: #CC0000;
+    font-family: sans-serif;
+}

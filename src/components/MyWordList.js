@@ -21,9 +21,12 @@ class MyWordList extends Component {
     const {name, trans} = wordcard;
     return (
         <div>
-          <li>
-            <h4>{name} {trans}</h4>
-          </li>
+          <ul>
+            <li>
+                <span className="wordlist-english"> {name} </span> 
+                <span className="wordlist-trans"> {trans} </span>
+            </li>
+          </ul>  
         </div>
         )
   }
@@ -39,9 +42,16 @@ class MyWordList extends Component {
     const {wordcards} = this.state.WordList;
     return (
         <div className="container">
-          <h1>My Word List</h1>
-          <Link to ={'/wordreview'}><h4>Word Review</h4></Link>
-          {wordcards.map(this.handleWordList.bind(this))}
+          <h1 className="homepage-title">My Word List</h1>
+          <div className="homepage-btn-crew">
+          <button type="button" className="homepage-btn">Info</button> &nbsp;
+          <button type="button" className="homepage-btn">Designer</button> &nbsp;
+          <Link to ={'/wordreview'}><button type="button" className="homepage-btn">Selection Test</button></Link> &nbsp;
+          <Link to ={'/wordreview_trans'}><button type="button" className="homepage-btn">Translation Test</button></Link> &nbsp;
+          </div>
+            <span>
+                {wordcards.map(this.handleWordList.bind(this))}
+            </span>
         </div>
         );
   }
