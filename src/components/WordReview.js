@@ -38,8 +38,8 @@ class WordReview extends Component {
       this.setState({
         test: test.concat({
           topic: wordcards[index[shuffleSelection]].name,
-          //answer: wordcards[index[shuffleSelection]].trans,
           answer: shuffleSelection,
+          highlightQ: false,
           selectedValue: wordcards[index[0]].trans,
           selection: [
             {highlight:false,title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
@@ -51,14 +51,23 @@ class WordReview extends Component {
     }
   }
   handleTest(test, i){
-    const {topic, selection, selectedValue} = test;
+    const {topic, highlightQ, selection, selectedValue} = test;
     const questionNumber = i + 1;
-    return(
+    if(highlightQ){
+      return(
+        <div>
+          <h4 className = 'text-danger'>Question {questionNumber}: {topic}</h4>
+          <ul>{selection.map(this.handleSelectionList,this)}</ul>
+        </div>
+        );
+    }else{
+      return(
         <div>
           <h4>Question {questionNumber}: {topic}</h4>
           <ul>{selection.map(this.handleSelectionList,this)}</ul>
         </div>
         );
+    }
   }
   handleSelectionList(oneSelection,i){
     const {title, testNumber, checked, highlight} = oneSelection;
@@ -80,6 +89,7 @@ class WordReview extends Component {
     //test[testNumber].selectedValue = event.target.checked;
     test.splice(testNumber,1,{
       topic: test[testNumber].topic,
+      highlightQ: test[testNumber].highlightQ,
       answer: test[testNumber].answer,
       selectedValue: event.target.value,
       selection: test[testNumber].selection
@@ -97,12 +107,19 @@ class WordReview extends Component {
       if(selectedValue === test[countTopic].selection[answer].title){
         score_temp = score_temp + 1;
       }else{
+        test.splice(countTopic,1,{
+          topic: test[countTopic].topic,
+          highlightQ: true,
+          answer: test[countTopic].answer,
+          selectedValue: test[countTopic].selectedValue,
+          selection: test[countTopic].selection
+        });
         test[countTopic].selection.splice(answer,1,{
           highlight:true,
           title:test[countTopic].selection[answer].title,
           checked:test[countTopic].selection[answer].checked,
           testNumber:test[countTopic].selection[answer].testNumber
-        }) 
+        });
       }
     }
     if(score_temp === 0)score_temp = 0;
