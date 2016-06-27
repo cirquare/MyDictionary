@@ -38,14 +38,13 @@ class WordReview extends Component {
       this.setState({
         test: test.concat({
           topic: wordcards[index[shuffleSelection]].name,
+          answer: wordcards[index[shuffleSelection]].trans,
+          selectedValue: wordcards[index[0]].trans,
           selection: [
             {title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
             {title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
             {title: wordcards[index[2]].trans,checked:false,testNumber:countTestNumber}
-          ],
-          answer: shuffleSelection,
-          testID: ''+countTestNumber,
-          selectedValue: wordcards[index[0]].trans
+          ]
         })
       })
     }
@@ -62,12 +61,11 @@ class WordReview extends Component {
   }
   handleSelectionList(oneSelection,i){
     const {title, testNumber, checked} = oneSelection;
-    const {selectedValue,testID} = this.state.test[testNumber];
+    const {selectedValue} = this.state.test[testNumber];
     return(
         <Selection
           index = {i}
           testNumber = {testNumber}
-          testID = {testID}
           checked = {checked}
           selectedValue = {selectedValue}
           title = {title}
@@ -80,16 +78,21 @@ class WordReview extends Component {
     //test[testNumber].selectedValue = event.target.checked;
     test.splice(testNumber,1,{
       topic: test[testNumber].topic,
-      selection: test[testNumber].selection,
-      answer: test[testNumber],
-      testID: test[testNumber],
-      selectedValue: event.target.value
+      answer: test[testNumber].answer,
+      selectedValue: event.target.value,
+      selection: test[testNumber].selection
     });
+    //console.log(test[testNumber].selectedValue);
+    //console.log(test[testNumber].answer);
+    /*
     test[testNumber].selection.splice(i,1,{
       title:test[testNumber].selection[i].title,
       checked:event.target.checked,
       testNumber:test[testNumber].selection[i].testNumber
     })
+    console.log(test[testNumber].selection[i].checked);
+    console.log(test[testNumber].selection[0].checked);
+    */
     this.setState({
       test: test
     });
@@ -139,7 +142,8 @@ class WordReview extends Component {
   }
 }
 
-WordReview.propTypes = { 
+WordReview.propTypes = {
+  WordList: React.PropTypes.object,
   test: React.PropTypes.array,
   score: React.PropTypes.number
 }

@@ -4,14 +4,15 @@ import './MyWordList.css';
 
 class Selection extends Component {
   render(){
-    const {index, testNumber, testID, selectedValue,
+    const {index, testNumber, selectedValue,
       title, onChange, checked} = this.props;
     return(
         <div>
           <input
             type = "radio"
-            name = {testID}
+            name = {testNumber}
             value = {title}
+            onChange = {function(event){return onChange(event,index,testNumber)}}
           />
           <label>{title}</label>
         </div>
