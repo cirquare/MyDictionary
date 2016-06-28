@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import 'babel-polyfill';
 import fetch from 'isomorphic-fetch';
+import handleReview from './handleReview';
 
 import './MyWordList.css';
 
@@ -12,15 +13,13 @@ class ReviewMode extends Component {
       WordList: {wordcards:[]}
     };
   }
-  
+
   setReview(temp){
     this.setState({WordList:temp});
   }
-  
-  handleWordList(){
-      console.log("1");
-      const {name, trans} = this.state.WordList.wordcards;
-      console.log(name);
+
+  handleWordList(wordcard){
+    const {name, trans} = wordcard;
     return (
         <div>
           <ul>
@@ -33,44 +32,37 @@ class ReviewMode extends Component {
         </div>
         )
   }
-  
+
+
   componentDidMount() {
-    fetch('/api/reviewmode')
+    fetch('/api/mywordlist')
       .then(function(res){return res.json()})
       .then(this.setReview.bind(this));
 
   }
-
-
-
+  
   render() {
     const {wordcards} = this.state.WordList;
+    console.log("111");
+    console.log(wordcards[0]);
+    console.log("22");
     return (
         <div className="container">
           <h1 className="homepage-title"><b>Review Time</b></h1>
             <div className="homepage-btn-crew">
                 <button type="button" className="btn btn-info homepage-btn">Info</button> &nbsp;
                 <button type="button" className="btn btn-success homepage-btn">Designer</button> &nbsp;
-                <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">Selection Test</button></Link> &nbsp;
-                <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">Translation Test</button></Link> &nbsp;
-                <Link to ={'/reviewmode'}><button type="button" disabled="disabled "className="btn btn-default btn-change homepage-btn">
+                <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">
+                    Selection Test</button></Link> &nbsp;
+                <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
+                    Translation Test</button></Link> &nbsp;
+                <Link to ={'/reviewmode'}><button type="button" disabled="disabled" className="btn btn-default btn-change homepage-btn">
                     Review</button></Link>
             </div>
-            <div class="row">
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-</div>
-            {this.handleWordList.bind(this)}
+            
+            <span>
+            {wordcards.map(this.handleWordList.bind(this))}
+            </span>
         </div>
         );
   }

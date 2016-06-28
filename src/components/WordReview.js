@@ -74,7 +74,7 @@ class WordReview extends Component {
       return(
         <div>
           <h4 className="question">Question {questionNumber}: {topic}</h4>
-          <div className="">
+          <div>
             <ul>{selection.map(this.handleSelectionList,this)}</ul>
           </div>
         </div>
@@ -185,7 +185,8 @@ class WordReview extends Component {
                     Selection Test</button></Link> &nbsp;
                 <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
                     Translation Test</button></Link> &nbsp;
-                <button type="button" className="btn btn-default btn-change homepage-btn">Contact Us</button> 
+                <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
+                    Review</button></Link>  
             </div>
             <br/>
           <small className="Select-subtitle">Please select the correct translation to the following words.</small> <br></br>

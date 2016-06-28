@@ -35,5 +35,4 @@ class Selection extends Component {
     }
   }
 }
-//<label>{`${highlight?'<strong>':''}`}{title}{`${highlight?'</strong>':''}`}<label>
 export default Selection;

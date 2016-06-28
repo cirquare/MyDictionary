@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import 'babel-polyfill';
 import fetch from 'isomorphic-fetch';
+import qsort from 'quicksorter';
 
 import './MyWordList.css';
 
@@ -14,7 +15,31 @@ class MyWordList extends Component {
   }
 
   setWordList(temp){
-    this.setState({WordList:temp});
+
+    let arr = [];
+    let tempSize = 0;
+    let cnt = 0;
+    tempSize = parseInt(temp.wordcards[0].total,10);
+    
+    for(cnt = 0; cnt<tempSize; cnt++){
+        arr.push(temp.wordcards[cnt]);
+    }
+    
+    qsort(arr, function(a, b) {
+        var at = 0;
+        var bt = 0;
+        at = parseInt(a.testTime,10);
+        bt = parseInt(b.testTime,10);
+        return at < bt ? -1 : at > bt ? 1 : 0
+    })
+    
+    for(cnt = 0; cnt<tempSize; cnt++){
+        temp.wordcards.splice(cnt,1,arr[cnt]); 
+    }
+    
+    this.setState({
+        WordList:temp
+    });
   }
 
   handleWordList(wordcard){

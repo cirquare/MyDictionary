@@ -5,7 +5,9 @@
 
 input:focus{outline:none}
 
-
+.background {
+    background-color: #0000AA;
+}
 
 .homepage-btn {
     border-width: 3px;
