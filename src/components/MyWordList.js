@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import 'babel-polyfill';
 import fetch from 'isomorphic-fetch';
 import qsort from 'quicksorter';
+import date from 'date-and-time';
 
 import './MyWordList.css';
 
@@ -72,6 +73,8 @@ class MyWordList extends Component {
     }else{
       const countLength = WordList.wordcards.length + 1;
       let countWordCards = 1;
+      var now = new Date();
+      let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
       for(;countWordCards<=countLength;countWordCards++){
         if(countWordCards<=countLength-1){
           WordList.wordcards.splice(countWordCards-1,1,{
@@ -79,7 +82,9 @@ class MyWordList extends Component {
             trans: WordList.wordcards[countWordCards-1].trans,
             testTime: WordList.wordcards[countWordCards-1].testTime,
             number: WordList.wordcards[countWordCards-1].number,
-            total: countLength
+            total: countLength,
+            updateTime: nowString,
+            inputTime: nowString
           })
         }else{
           WordList.wordcards.splice(countWordCards-1,0,{
@@ -87,7 +92,9 @@ class MyWordList extends Component {
             trans: Chinese,
             testTime: 0,
             number: countWordCards,
-            total: countLength
+            total: countLength,
+            updateTime: nowString,
+            inputTime: nowString
           })
         }
       }

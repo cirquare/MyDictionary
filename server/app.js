@@ -36,7 +36,8 @@ app.post('/api/wordreview',function(req,res){
   //console.log(wordcards);
   //console.log(typeof(wordcards));
   var json2csv = require('json2csv');
-  var fields = ['name','trans','testTime','number','total'];
+  var fields = ['name','trans','testTime','number',
+                'total','updateTime','inputTime'];
   var fs = require('fs');
   var path = require('path');
   var filePath = path.join(__dirname, 'wordlist.csv');

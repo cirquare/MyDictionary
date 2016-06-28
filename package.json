@@ -16,6 +16,7 @@
   "dependencies": {
     "babel-polyfill": "^6.8.0",
     "body-parser": "^1.15.2",
+    "date-and-time": "^0.3.0",
     "express": "^4.13.4",
     "isomorphic-fetch": "^2.2.1",
     "json2csv": "^3.5.0",

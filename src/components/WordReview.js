@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import 'babel-polyfill';
 import fetch from 'isomorphic-fetch';
 import Selection from './Selection'
+import date from 'date-and-time';
 import './MyWordList.css';
 
 class WordReview extends Component {
@@ -21,6 +22,7 @@ class WordReview extends Component {
   setTest(temp){
     let countTestNumber = 0;
     let countSelection = 0;
+    let countTestTopic = 0;
     let index = [0,0,0];
     let checkRepeat = 0;
     let shuffleSelection = 0;
@@ -35,6 +37,14 @@ class WordReview extends Component {
         }
       }
       shuffleSelection = Math.floor(Math.random()*3);
+      if (countTestNumber>0){
+        for (countTestTopic = 0;countTestTopic<countTestNumber;countTestTopic++){
+          if(wordcards[index[shuffleSelection]].name === test[countTestTopic].topic){
+            shuffleSelection = Math.floor(Math.random()*3);
+            countTestTopic--;
+          }
+        }
+      }
       this.setState({
         test: test.concat({
           topic: wordcards[index[shuffleSelection]].name,
@@ -135,6 +145,36 @@ class WordReview extends Component {
   }
   handleScore(){
     const {test, score,WordList} = this.state;
+    /*
+    const countLength = WordList.wordcards.length;
+    let countWordCards = 1;
+    var now = new Date();
+    let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
+    for(;countWordCards<=countLength;countWordCards++){
+      if(countWordCards<=countLength-1){
+        WordList.wordcards.splice(countWordCards-1,1,{
+          name: WordList.wordcards[countWordCards-1].name,
+          trans: WordList.wordcards[countWordCards-1].trans,
+          testTime: WordList.wordcards[countWordCards-1].testTime,
+          number: WordList.wordcards[countWordCards-1].number,
+          total: countLength,
+          updateTime: nowString,
+          inputTime: nowString
+        })
+      }else{
+        WordList.wordcards.splice(countWordCards-1,0,{
+          name: English,
+          trans: Chinese,
+          testTime: 0,
+          number: countWordCards,
+          total: countLength,
+          updateTime: nowString,
+          inputTime: nowString
+        })
+      }
+    }*/
+    /*
+    this.setState({WordList:WordList});
     fetch('/api/wordreview',{
       method: 'post',
       headers:{
@@ -143,6 +183,16 @@ class WordReview extends Component {
       },
       body: JSON.stringify(WordList.wordcards),
     });
+    */
+    /*
+    fetch('/api/wordreview',{
+      method: 'post',
+      headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(WordList.wordcards),
+    });*/
     let score_temp = 0;
     let countTopic = 0;
     for(countTopic = 0; countTopic<3; countTopic++){
