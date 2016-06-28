@@ -134,11 +134,11 @@ class WordReview extends Component {
           testNumber:test[testNumber].selection[countSelection].testNumber
         });
       }
-      test[testNumber].selection.splice(countSelection,1,{
-        highlight:test[testNumber].selection[countSelection].highlight,
-        title:test[testNumber].selection[countSelection].title,
+      test[testNumber].selection.splice(i,1,{
+        highlight:test[testNumber].selection[i].highlight,
+        title:test[testNumber].selection[i].title,
         checked:event.target.checked,
-        testNumber:test[testNumber].selection[countSelection].testNumber
+        testNumber:test[testNumber].selection[i].testNumber
       });
       this.setState({
         test: test
