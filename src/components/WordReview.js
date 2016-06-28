@@ -48,6 +48,7 @@ class WordReview extends Component {
       this.setState({
         test: test.concat({
           topic: wordcards[index[shuffleSelection]].name,
+          wordcardsTag:index[shuffleSelection],
           answer: shuffleSelection,
           submitted: false,
           highlightQ: false,
@@ -117,6 +118,7 @@ class WordReview extends Component {
     if(!submitted){
       test.splice(testNumber,1,{
         topic: test[testNumber].topic,
+        wordcardsTag: test[testNumber].wordcardsTag,
         submitted: test[testNumber].submitted,
         highlightQ: test[testNumber].highlightQ,
         answer: test[testNumber].answer,
@@ -145,54 +147,6 @@ class WordReview extends Component {
   }
   handleScore(){
     const {test, score,WordList} = this.state;
-    /*
-    const countLength = WordList.wordcards.length;
-    let countWordCards = 1;
-    var now = new Date();
-    let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
-    for(;countWordCards<=countLength;countWordCards++){
-      if(countWordCards<=countLength-1){
-        WordList.wordcards.splice(countWordCards-1,1,{
-          name: WordList.wordcards[countWordCards-1].name,
-          trans: WordList.wordcards[countWordCards-1].trans,
-          testTime: WordList.wordcards[countWordCards-1].testTime,
-          number: WordList.wordcards[countWordCards-1].number,
-          total: countLength,
-          updateTime: nowString,
-          inputTime: nowString
-        })
-      }else{
-        WordList.wordcards.splice(countWordCards-1,0,{
-          name: English,
-          trans: Chinese,
-          testTime: 0,
-          number: countWordCards,
-          total: countLength,
-          updateTime: nowString,
-          inputTime: nowString
-        })
-      }
-    }*/
-    /*
-    this.setState({WordList:WordList});
-    fetch('/api/wordreview',{
-      method: 'post',
-      headers:{
-        'Accept':'application/json',
-        'Content-Type':'application/json',
-      },
-      body: JSON.stringify(WordList.wordcards),
-    });
-    */
-    /*
-    fetch('/api/wordreview',{
-      method: 'post',
-      headers:{
-        'Accept':'application/json',
-        'Content-Type':'application/json',
-      },
-      body: JSON.stringify(WordList.wordcards),
-    });*/
     let score_temp = 0;
     let countTopic = 0;
     for(countTopic = 0; countTopic<3; countTopic++){
@@ -201,15 +155,30 @@ class WordReview extends Component {
         score_temp = score_temp + 1;
         test.splice(countTopic,1,{
           topic: test[countTopic].topic,
+          wordcardsTag: test[countTopic].wordcardsTag,
           submitted: true,
           highlightQ: false,
           answer: test[countTopic].answer,
           selectedValue: test[countTopic].selectedValue,
           selection: test[countTopic].selection
         });
+        var now = new Date();
+        let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
+        const {wordcardsTag} = test[countTopic];
+        const {name, trans, testTime, number, total, inputTime} = WordList.wordcards[wordcardsTag];
+        WordList.wordcards.splice(wordcardsTag,1,{
+          name: name,
+          trans: trans,
+          testTime: testTime,
+          number: number,
+          total: total,
+          updateTime: nowString,
+          inputTime: inputTime
+        })
       }else{
         test.splice(countTopic,1,{
           topic: test[countTopic].topic,
+          wordcardsTag: test[countTopic].wordcardsTag,
           submitted: true,
           highlightQ: true,
           answer: test[countTopic].answer,
@@ -222,6 +191,20 @@ class WordReview extends Component {
           checked:test[countTopic].selection[answer].checked,
           testNumber:test[countTopic].selection[answer].testNumber
         });
+        var now = new Date();
+        let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
+        const {wordcardsTag} = test[countTopic];
+        const {name, trans, testTime, number, total, inputTime} = WordList.wordcards[wordcardsTag];
+        const newTestTime = parseInt(testTime,10) + 1;
+        WordList.wordcards.splice(wordcardsTag,1,{
+          name: name,
+          trans: trans,
+          testTime: newTestTime,
+          number: number,
+          total: total,
+          updateTime: nowString,
+          inputTime: inputTime
+        })
       }
     }
     if(score_temp === 0)score_temp = 0;
@@ -232,7 +215,16 @@ class WordReview extends Component {
 
     this.setState({
       test: test,
-      score: score_temp
+      score: score_temp,
+      WordList: WordList
+    });
+    fetch('/api/wordreview',{
+      method: 'post',
+      headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(WordList.wordcards),
     });
   }
   componentDidMount() {
