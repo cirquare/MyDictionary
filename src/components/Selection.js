@@ -8,7 +8,7 @@ class Selection extends Component {
       title, onChange, checked, disabled} = this.props;
     if(highlight && disabled){
       return(
-        <div>
+        <div className="question">
           <input
             type = "radio"
             name = {testNumber}
@@ -21,7 +21,7 @@ class Selection extends Component {
         );
     }else{
       return(
-        <div>
+        <div className="question">
           <input
             type = "radio"
             name = {testNumber}

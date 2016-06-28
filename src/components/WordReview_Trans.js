@@ -56,8 +56,8 @@ class WordReview_Trans extends Component {
         if(submitted && highlightQ){
           return(
             <div>
-              <h4 className = 'text-warning'>Question {questionNumber} : {topic}</h4>
-              <form name="formName">
+              <h4 className ="text-warning question-warn"><b>Question {questionNumber} : {topic}</b></h4>
+              <form name="formName" className="Trans-blank">
                 <Translation
                   value = {userAns}
                   i = {i}
@@ -65,13 +65,14 @@ class WordReview_Trans extends Component {
                   onChange = {this.handleChange.bind(this)}
                 />
               </form>
+              <br/>
             </div>
           )
         }else{
           return(
             <div>
-              <h4>Question {questionNumber} : {topic}</h4>
-              <form name="formName">
+              <h4 className="question">Question {questionNumber} : {topic}</h4>
+              <form name="formName" className="Trans-blank">
                 <Translation
                   value = {userAns}
                   i = {i}
@@ -79,6 +80,7 @@ class WordReview_Trans extends Component {
                   onChange = {this.handleChange.bind(this)}
                 />
               </form>
+              <br/>
             </div>
           )
         }
@@ -149,12 +151,26 @@ class WordReview_Trans extends Component {
         const {wordcards} = this.state.WordList;
         return (
             <div className="container">
-            <h1>Translation Test</h1>
-            <small>Please fill the correct translation to the following words.</small>
-            <section>{test.map(this.handleTransTest,this)}</section>
-            <button type = "button" className = "btn btn-success" onClick = {this.handleTransScore.bind(this)}>submit</button>
-            <h4>Score: {score}</h4>
-            <Link to ={'/'}><h4>Back to List</h4></Link>
+                <h1 className="Trans-title"><b>Translation Test</b></h1>
+            <div className="homepage-btn-crew">
+                <button type="button" className="btn btn-info homepage-btn">Info</button> &nbsp;
+                <button type="button" className="btn btn-success homepage-btn">Designer</button> &nbsp;
+                <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">Selection Test</button></Link> &nbsp;
+                <Link to ={'/wordreview_trans'}><button type="button" disabled="disabled"className="btn btn-danger homepage-btn">
+                    Translation Test</button></Link> &nbsp;
+                <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">Review</button></Link>
+            </div>
+                <br/>
+                <small className="Trans-subtitle">Please fill the correct translation to the following words.</small>
+                <br/><br/>
+                    <section>{test.map(this.handleTransTest,this)}</section>
+                <br/><br/>
+                <h4 className="test-foot">Score: {score}</h4>
+                <div className="test-foot">    
+                    <button type="button" className="btn btn-success" onClick = {this.handleTransScore.bind(this)}>submit</button> &nbsp;
+                    <button type="button" className="btn btn-danger" onClick =""> Reset </button> &nbsp;
+                    <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
+                </div>
             </div>
         );
     }

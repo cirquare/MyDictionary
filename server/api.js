@@ -33,6 +33,10 @@ router.get('/mywordlist',function(req, res){
     })
 })
 
+router.get('/reviewmode',function(req,res){
+    res.json(WordList)
+})
+
 router.get('/users/:username', function(req, res){
   var found = false;
   for(var i = 0; i < UserProfile.users.length; i++){
