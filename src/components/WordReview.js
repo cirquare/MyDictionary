@@ -84,6 +84,8 @@ class WordReview extends Component {
   handleSelectionList(oneSelection,i){
     const {title, testNumber, checked, highlight} = oneSelection;
     const {selectedValue, submitted} = this.state.test[testNumber];
+    var forceChecked = false;
+    if(selectedValue == title && submitted)forceChecked = true;
     return(
         <Selection
           className="question"
@@ -91,7 +93,8 @@ class WordReview extends Component {
           highlight = {highlight}
           testNumber = {testNumber}
           checked = {checked}
-          disabled = {submitted}
+          forceChecked = {forceChecked}
+          submitted = {submitted}
           selectedValue = {selectedValue}
           title = {title}
           onChange = {this.handleSelectionChecked.bind(this)}
@@ -100,18 +103,35 @@ class WordReview extends Component {
   }
   handleSelectionChecked(event, i, testNumber){
     const {test} = this.state;
-    //test[testNumber].selectedValue = event.target.checked;
-    test.splice(testNumber,1,{
-      topic: test[testNumber].topic,
-      submitted: test[testNumber].submitted,
-      highlightQ: test[testNumber].highlightQ,
-      answer: test[testNumber].answer,
-      selectedValue: event.target.value,
-      selection: test[testNumber].selection
-    });
-    this.setState({
-      test: test
-    });
+    const {submitted} = test[testNumber];
+    if(!submitted){
+      test.splice(testNumber,1,{
+        topic: test[testNumber].topic,
+        submitted: test[testNumber].submitted,
+        highlightQ: test[testNumber].highlightQ,
+        answer: test[testNumber].answer,
+        selectedValue: event.target.value,
+        selection: test[testNumber].selection
+      });
+      let countSelection = 0;
+      for(;countSelection < 3;countSelection ++){
+        test[testNumber].selection.splice(countSelection,1,{
+          highlight:test[testNumber].selection[countSelection].highlight,
+          title:test[testNumber].selection[countSelection].title,
+          checked:false,
+          testNumber:test[testNumber].selection[countSelection].testNumber
+        });
+      }
+      test[testNumber].selection.splice(countSelection,1,{
+        highlight:test[testNumber].selection[countSelection].highlight,
+        title:test[testNumber].selection[countSelection].title,
+        checked:event.target.checked,
+        testNumber:test[testNumber].selection[countSelection].testNumber
+      });
+      this.setState({
+        test: test
+      });
+    }
   }
   handleScore(){
     const {test, score,WordList} = this.state;
