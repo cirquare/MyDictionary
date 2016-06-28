@@ -38,35 +38,60 @@ class WordReview extends Component {
       this.setState({
         test: test.concat({
           topic: wordcards[index[shuffleSelection]].name,
-          answer: wordcards[index[shuffleSelection]].trans,
-          selectedValue: wordcards[index[0]].trans,
+          answer: shuffleSelection,
+          submitted: false,
+          highlightQ: false,
+          selectedValue: '',
           selection: [
-            {title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
-            {title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
-            {title: wordcards[index[2]].trans,checked:false,testNumber:countTestNumber}
+            {highlight:false,title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
+            {highlight:false,title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
+            {highlight:false,title: wordcards[index[2]].trans,checked:false,testNumber:countTestNumber}
           ]
         })
       })
     }
   }
   handleTest(test, i){
-    const {topic, selection, selectedValue} = test;
+    const {topic, submitted, highlightQ, selection, selectedValue} = test;
     const questionNumber = i + 1;
-    return(
+    if(submitted){
+      if(highlightQ){
+        return(
+          <div>
+            <h4 className = 'text-danger question-warn'><b>Question {questionNumber}: {topic}</b></h4>
+            <ul>{selection.map(this.handleSelectionList,this)}</ul>
+          </div>
+          );
+      }else{
+        return(
+          <div>
+            <h4 className="question">Question {questionNumber}: {topic}</h4>
+            <ul>{selection.map(this.handleSelectionList,this)}</ul>
+          </div>
+          );
+      }
+    }else{
+      return(
         <div>
-          <h4>Question {questionNumber}: {topic}</h4>
-          <ul>{selection.map(this.handleSelectionList,this)}</ul>
+          <h4 className="question">Question {questionNumber}: {topic}</h4>
+          <div className="">
+            <ul>{selection.map(this.handleSelectionList,this)}</ul>
+          </div>
         </div>
         );
+    }
   }
   handleSelectionList(oneSelection,i){
-    const {title, testNumber, checked} = oneSelection;
-    const {selectedValue} = this.state.test[testNumber];
+    const {title, testNumber, checked, highlight} = oneSelection;
+    const {selectedValue, submitted} = this.state.test[testNumber];
     return(
         <Selection
+          className="question"
           index = {i}
+          highlight = {highlight}
           testNumber = {testNumber}
           checked = {checked}
+          disabled = {submitted}
           selectedValue = {selectedValue}
           title = {title}
           onChange = {this.handleSelectionChecked.bind(this)}
@@ -78,21 +103,12 @@ class WordReview extends Component {
     //test[testNumber].selectedValue = event.target.checked;
     test.splice(testNumber,1,{
       topic: test[testNumber].topic,
+      submitted: test[testNumber].submitted,
+      highlightQ: test[testNumber].highlightQ,
       answer: test[testNumber].answer,
       selectedValue: event.target.value,
       selection: test[testNumber].selection
     });
-    //console.log(test[testNumber].selectedValue);
-    //console.log(test[testNumber].answer);
-    /*
-    test[testNumber].selection.splice(i,1,{
-      title:test[testNumber].selection[i].title,
-      checked:event.target.checked,
-      testNumber:test[testNumber].selection[i].testNumber
-    })
-    console.log(test[testNumber].selection[i].checked);
-    console.log(test[testNumber].selection[0].checked);
-    */
     this.setState({
       test: test
     });
@@ -103,10 +119,31 @@ class WordReview extends Component {
     let countTopic = 0;
     for(countTopic = 0; countTopic<3; countTopic++){
       const {selectedValue, answer} = test[countTopic];
-      if(selectedValue === answer){
+      if(selectedValue === test[countTopic].selection[answer].title){
         score_temp = score_temp + 1;
+        test.splice(countTopic,1,{
+          topic: test[countTopic].topic,
+          submitted: true,
+          highlightQ: false,
+          answer: test[countTopic].answer,
+          selectedValue: test[countTopic].selectedValue,
+          selection: test[countTopic].selection
+        });
       }else{
-        
+        test.splice(countTopic,1,{
+          topic: test[countTopic].topic,
+          submitted: true,
+          highlightQ: true,
+          answer: test[countTopic].answer,
+          selectedValue: test[countTopic].selectedValue,
+          selection: test[countTopic].selection
+        });
+        test[countTopic].selection.splice(answer,1,{
+          highlight:true,
+          title:test[countTopic].selection[answer].title,
+          checked:test[countTopic].selection[answer].checked,
+          testNumber:test[countTopic].selection[answer].testNumber
+        });
       }
     }
     if(score_temp === 0)score_temp = 0;
@@ -116,6 +153,7 @@ class WordReview extends Component {
     else score_temp = -1;
 
     this.setState({
+      test: test,
       score: score_temp
     });
   }
@@ -131,12 +169,25 @@ class WordReview extends Component {
     const {wordcards} = this.state.WordList;
     return (
         <div className="container">
-          <h1>Word Review Test</h1>
-          <small>Please select the correct translation to the following words.</small>
-          <section>{test.map(this.handleTest,this)}</section>
-          <button type = "button" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button>
-          <h4>Score: {score}</h4>
-          <Link to ={'/'}><h4>Back to List</h4></Link>
+          <h1 className="Select-title"><b>Selection Test</b></h1>
+            <div className="homepage-btn-crew">
+                <button type="button" className="btn btn-info homepage-btn">Info</button> &nbsp;
+                <button type="button" className="btn btn-success homepage-btn">Designer</button> &nbsp;
+                <Link to ={'/wordreview'}><button type="button" disabled="disabled"className="btn btn-warning homepage-btn">
+                    Selection Test</button></Link> &nbsp;
+                <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
+                    Translation Test</button></Link> &nbsp;
+                <button type="button" className="btn btn-default btn-change homepage-btn">Contact Us</button> 
+            </div>
+            <br/>
+          <small className="Select-subtitle">Please select the correct translation to the following words.</small> <br></br>
+            <section>{test.map(this.handleTest,this)}</section>
+            <h4 className="test-foot">Score: {score}</h4>
+            <div className="test-foot">
+                <button type = "button" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button> &nbsp;
+                <button type="button" className="btn btn-danger" onClick =""> Reset </button> &nbsp;
+                <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
+            </div>
         </div>
         );
   }

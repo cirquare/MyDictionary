@@ -113,6 +113,10 @@ router.get('/mywordlist',function(req, res){
   res.json(WordList)
 })
 
+router.get('/reviewmode',function(req,res){
+    res.json(WordList)
+})
+
 router.get('/users', function(req, res){
   res.json(UserProfile)
 })
