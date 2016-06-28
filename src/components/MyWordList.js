@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import 'babel-polyfill';
 import fetch from 'isomorphic-fetch';
+import qsort from 'quicksorter';
 
 import './MyWordList.css';
 
@@ -9,12 +10,38 @@ class MyWordList extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      WordList: {wordcards:[]}
+      WordList: {wordcards:[]},
+      English: '',
+      Chinese: ''
     };
   }
 
   setWordList(temp){
-    this.setState({WordList:temp});
+
+    let arr = [];
+    let tempSize = 0;
+    let cnt = 0;
+    tempSize = parseInt(temp.wordcards[0].total,10);
+    
+    for(cnt = 0; cnt<tempSize; cnt++){
+        arr.push(temp.wordcards[cnt]);
+    }
+    
+    qsort(arr, function(a, b) {
+        var at = 0;
+        var bt = 0;
+        at = parseInt(a.testTime,10);
+        bt = parseInt(b.testTime,10);
+        return at < bt ? -1 : at > bt ? 1 : 0
+    })
+    
+    for(cnt = 0; cnt<tempSize; cnt++){
+        temp.wordcards.splice(cnt,1,arr[cnt]); 
+    }
+    
+    this.setState({
+        WordList:temp
+    });
   }
 
   handleWordList(wordcard){
@@ -31,7 +58,45 @@ class MyWordList extends Component {
         </div>
         )
   }
-
+  handleNewEnglish(event){
+    this.setState({English:event.target.value});
+  }
+  handleNewChinese(event){
+    this.setState({Chinese:event.target.value});
+  }
+  handleSubmit(event){
+    const {WordList, Chinese, English} = this.state;
+    const countLength = WordList.wordcards.length + 1;
+    let countWordCards = 1;
+    for(;countWordCards<=countLength;countWordCards++){
+      if(countWordCards<=countLength-1){
+        WordList.wordcards.splice(countWordCards-1,1,{
+          name: WordList.wordcards[countWordCards-1].name,
+          trans: WordList.wordcards[countWordCards-1].trans,
+          testTime: WordList.wordcards[countWordCards-1].testTime,
+          number: WordList.wordcards[countWordCards-1].number,
+          total: countLength
+        })
+      }else{
+        WordList.wordcards.splice(countWordCards-1,0,{
+          name: English,
+          trans: Chinese,
+          testTime: 0,
+          number: countWordCards,
+          total: countLength
+        })
+      }
+    }
+    this.setState({WordList:WordList});
+    fetch('/api/wordreview',{
+      method: 'post',
+      headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(WordList.wordcards),
+    });
+  }
   componentDidMount() {
     fetch('/api/mywordlist')
       .then(function(res){return res.json()})
@@ -40,6 +105,7 @@ class MyWordList extends Component {
   }
 
   render() {
+    const {English, Chinese} = this.state;
     const {wordcards} = this.state.WordList;
     return (
         <div className="container">
@@ -53,16 +119,16 @@ class MyWordList extends Component {
             </div>
             <form className="homepage-input-instr">
                 <div className="form-group input-btn-crew">   
-                    <input type="text" placeholder='English' className="homepage-input input-btn-change"/> &nbsp;
-                    <input type="text" placeholder='Chinese' className="homepage-input input-btn-change"/> &nbsp;
+                    <input type="text" placeholder='English' className="homepage-input input-btn-change" value = {English} onChange = {this.handleNewEnglish.bind(this)}/> &nbsp;
+                    <input type="text" placeholder='Chinese' className="homepage-input input-btn-change" value = {Chinese} onChange = {this.handleNewChinese.bind(this)}/> &nbsp;
                     <select name="Word Of Speech">
-                        <option value="VERB">                        Verb</option>
-                        <option value="NOUN">                        Noun</option>
-                        <option value="ADJECTIE">               Adjective</option>
-                        <option value="ADVERB">                    Adverb</option>
-                        <option value="PREPOSITION">          Preposition</option>
+                        <option value="VERB">Verb</option>
+                        <option value="NOUN">Noun</option>
+                        <option value="ADJECTIE">Adjective</option>
+                        <option value="ADVERB">Adverb</option>
+                        <option value="PREPOSITION">Preposition</option>
                     </select> &nbsp;
-                    <input type="submit" value="Add To List" className="submit-btn"/>
+                    <input type="submit" value="Add To List" onClick = {this.handleSubmit.bind(this)} className="submit-btn"/>
                 </div>
             </form>
             

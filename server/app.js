@@ -39,7 +39,7 @@ app.post('/api/wordreview',function(req,res){
   var fields = ['name','trans','testTime','number','total'];
   var fs = require('fs');
   var path = require('path');
-  var filePath = path.join(__dirname, 'test.csv');
+  var filePath = path.join(__dirname, 'wordlist.csv');
   var opts = {
     data: wordcards,
     fields: fields,
