@@ -114,7 +114,15 @@ class WordReview extends Component {
     });
   }
   handleScore(){
-    const {test, score} = this.state;
+    const {test, score,WordList} = this.state;
+    fetch('/api/wordreview',{
+      method: 'post',
+      headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(WordList.wordcards),
+    });
     let score_temp = 0;
     let countTopic = 0;
     for(countTopic = 0; countTopic<3; countTopic++){
