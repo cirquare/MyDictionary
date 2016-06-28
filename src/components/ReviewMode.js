@@ -17,8 +17,10 @@ class ReviewMode extends Component {
     this.setState({WordList:temp});
   }
   
-  handleWordList(wordcard){
-    const {name, trans} = wordcard;
+  handleWordList(){
+      console.log("1");
+      const {name, trans} = this.state.WordList.wordcards;
+      console.log(name);
     return (
         <div>
           <ul>
@@ -54,10 +56,21 @@ class ReviewMode extends Component {
                 <Link to ={'/reviewmode'}><button type="button" disabled="disabled "className="btn btn-default btn-change homepage-btn">
                     Review</button></Link>
             </div>
-            
-            <span>
-                {wordcards.map(this.handleWordList.bind(this))}
-            </span>
+            <div class="row">
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+  <div class="col-md-1">.col-md-1</div>
+</div>
+            {this.handleWordList.bind(this)}
         </div>
         );
   }
