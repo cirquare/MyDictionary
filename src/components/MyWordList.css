@@ -58,16 +58,21 @@ input:focus{outline:none}
     border-style: none;
 }
 
-.wordlist-trans {
+.top-wordlist-trans {
     color: #770077;
+    font-size: 15px;
     font-family: Mircosoft JhengHei;
-    position: absoulte;
+    position: relative;
 }
 
 
-.wordlist-english {
-    color: #CC0000;
+.top-wordlist-english {
+    color: #000088;
+    font-size: 18px;
     font-family: sans-serif;
+    position: relative;
+    top:20px;
+    right:40px;
 }
 
 .Trans-title {
@@ -176,11 +181,48 @@ input:focus{outline:none}
 
 .top-ten-title {
     color:red;
-    font-size: 20px;
+    font-size: 25px;
     font-family: cursive;
     padding-top: 10px;
 }
 
 .img {
     border-radius: 50px;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.pic-padd-top-one {
+    position:relative;
+    top:30px;
+}
+
+.pic-padd-top-two {
+    position:relative;
+    top:230px;
+}
+
+.profile-yuan {
+    position:relative;
+    top:100px;
+    right:-70px;
+    font-family:Microsoft JhengHei;
+    font-size: 30px;
+}
+
+.profile-ray {
+    position:relative;
+    top:-150px;
+    font-family: fantasy;
+    font-size: 20px;
+}
+
+.review-english {
+
+}
+
+.review-chinese {
+
 }

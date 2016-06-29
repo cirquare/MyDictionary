@@ -103,28 +103,13 @@ class MyWordList extends Component {
 
   }
 
-  handleTopTenList(toptencard) {
-    const {name, trans} = toptencard;
-    return (
-        <div>
-            <ul>
-                <div className="wordlist-english"><b> {name}
-                    {trans} 
-                    </b>
-                </div>
-            </ul>
-        </div>
-    )
-  }
-
   handleWordList(wordcard){
     const {name, trans} = wordcard;
     return (
         <div>
             <ul>
-                <div className="tooltip wordlist-english"><b> ★ &nbsp; {name}
-                    <span className="tooltiptext wordlist-trans">{trans}</span>
-                    </b>
+                <div className="top-wordlist-english"><b>★ &nbsp;{name} </b>&nbsp;
+                    <span className="top-wordlist-trans">{trans}</span>
                 </div> 
             </ul>
         </div>
@@ -231,29 +216,32 @@ class MyWordList extends Component {
                   <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
                     Review</button></Link>
               </div>
+              <span>
                   <form className="homepage-input-instr">
                       <div className="form-group input-btn-crew">   
                           <input type="text" placeholder='English' className="homepage-input input-btn-change" 
                                 value = {English} onChange = {this.handleNewEnglish.bind(this)}/> &nbsp;
                           <input type="text" placeholder='Chinese' className="homepage-input input-btn-change" 
                                 value = {Chinese} onChange = {this.handleNewChinese.bind(this)}/> &nbsp;
-                          <button type="submit" onClick = {this.handleSubmit.bind(this)} className="submit-btn">Submit</button>
+                          <button type="submit" onClick = {this.handleSubmit.bind(this)} className="submit-btn"><b>Submit</b></button>
                       </div>
                   </form>
                   <section className="homepage-input-instr">
                       <div className="form-group input-btn-crew">
                           <input type="text" placeholder='Search for words...' className="homepage-input input-btn-change" 
                                 value = {SearchStr} onChange = {this.handleSearchStr.bind(this)}/> &nbsp;
-                          <button type="button" onClick = {this.handleSearch.bind(this)} className="submit-btn">Search</button>
+                          <button type="button" onClick = {this.handleSearch.bind(this)} className="submit-btn"><b>Search</b></button>
                           <span>{SearchResult}</span>
                       </div>
                   </section>
+              </span>
                 <div className="row">
                   <div className="col-md-3"></div> 
-                  <div className="col-md-4 top-ten-title"> Top Ten Difficult 
+                  <div className="col-md-3 top-ten-title"><b> Top Ten Difficult</b> 
                         {TopTenCards.map(this.handleWordList.bind(this))}</div>
-                  <div className="col-md-5 top-ten-title"> &nbsp; &nbsp;Top Ten New 
+                  <div className="col-md-4 top-ten-title"><b> &nbsp; &nbsp;Top Ten New</b> 
                         {NewTenCards.map(this.handleWordList.bind(this))}</div>
+                  <div className="col-md-2"></div> 
                 </div>
           </div>
           );
@@ -279,23 +267,24 @@ class MyWordList extends Component {
                             value = {English} onChange = {this.handleNewEnglish.bind(this)}/> &nbsp;
                       <input type="text" placeholder='Empty!' className="homepage-input input-btn-change" 
                             value = {Chinese} onChange = {this.handleNewChinese.bind(this)}/> &nbsp;
-                      <button type="submit" onClick = {this.handleSubmit.bind(this)} className="submit-btn">Submit</button>
+                      <button type="submit" onClick = {this.handleSubmit.bind(this)} className="submit-btn"><b>Submit</b></button>
                   </div>
               </form>
               <section className="homepage-input-instr">
                   <div className="form-group input-btn-crew">   
                       <input type="text" placeholder='Search for words...' className="homepage-input input-btn-change" 
                             value = {SearchStr} onChange = {this.handleSearchStr.bind(this)}/> &nbsp;
-                      <button type="button" onClick = {this.handleSearch.bind(this)} className="submit-btn">Search</button>
+                      <button type="button" onClick = {this.handleSearch.bind(this)} className="submit-btn"><b>Search</b></button>
                       <span>{SearchResult}</span>
                   </div>
               </section>
                 <div className="row">
                   <div className="col-md-3"></div> 
-                  <div className="col-md-4 top-ten-title"> Top Ten Difficult 
+                  <div className="col-md-3 top-ten-title"><b> Top Ten Difficult</b> 
                         {TopTenCards.map(this.handleWordList.bind(this))}</div>
-                  <div className="col-md-5 top-ten-title"> &nbsp; &nbsp;Top Ten New 
+                  <div className="col-md-4 top-ten-title"><b> &nbsp; &nbsp;Top Ten New</b> 
                         {NewTenCards.map(this.handleWordList.bind(this))}</div>
+                  <div className="col-md-2"></div> 
                 </div>
           </div>
           );
@@ -321,23 +310,24 @@ class MyWordList extends Component {
                             value = {English} onChange = {this.handleNewEnglish.bind(this)}/> &nbsp;
                       <input type="text" placeholder='Chinese' className="homepage-input input-btn-change" 
                             value = {Chinese} onChange = {this.handleNewChinese.bind(this)}/> &nbsp;
-                      <button type="button" onClick = {this.handleSubmit.bind(this)} className="submit-btn">Submit</button>
+                      <button type="button" onClick = {this.handleSubmit.bind(this)} className="submit-btn"><b>Submit</b></button>
                   </div>
               </form>
               <section className="homepage-input-instr">
                   <div className="form-group input-btn-crew">   
                       <input type="text" placeholder='Empty!' className="homepage-input input-btn-change" 
                             value = {SearchStr} onChange = {this.handleSearchStr.bind(this)}/> &nbsp;
-                      <button type="submit" onClick = {this.handleSearch.bind(this)} className="submit-btn">Search</button>
+                      <button type="submit" onClick = {this.handleSearch.bind(this)} className="submit-btn"><b>Search</b></button>
                       <span>{SearchResult}</span>
                   </div>
               </section>
                 <div className="row">
                   <div className="col-md-3"></div> 
-                  <div className="col-md-4 top-ten-title"> Top Ten Difficult 
+                  <div className="col-md-3 top-ten-title"><b> Top Ten Difficult</b> 
                         {TopTenCards.map(this.handleWordList.bind(this))}</div>
-                  <div className="col-md-5 top-ten-title"> &nbsp; &nbsp;Top Ten New 
+                  <div className="col-md-4 top-ten-title"><b> &nbsp; &nbsp;Top Ten New</b> 
                         {NewTenCards.map(this.handleWordList.bind(this))}</div>
+                  <div className="col-md-2"></div> 
                 </div>
           </div>
           );
