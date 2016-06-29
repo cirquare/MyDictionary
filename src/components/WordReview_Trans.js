@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import 'babel-polyfill';
 import fetch from 'isomorphic-fetch';
 import Translation from './Translation';
+import date from 'date-and-time';
 import './MyWordList.css';
 
 
@@ -40,6 +41,7 @@ class WordReview_Trans extends Component {
             this.setState({
                 test: test.concat({
                   topic: wordcards[index[countTestNumber]].trans,
+                  wordcardsTag: index[countTestNumber],
                   testID: countTestNumber+1,
                   highlightQ: false,
                   submitted: false,
@@ -91,6 +93,7 @@ class WordReview_Trans extends Component {
         const {testID} = test;
         test.splice(i,1,{
             topic: test[i].topic,
+            wordcardsTag: test[i].wordcardsTag,
             highlightQ: test[i].highlightQ,
             submitted: test[i].submitted,
             testID: test[i].testID,
@@ -103,30 +106,58 @@ class WordReview_Trans extends Component {
     }
 
     handleTransScore(){
-        const {test ,score, userInput} = this.state;
+        const {test ,score, userInput, WordList} = this.state;
         let score_temp = 0;
         let countTestNumber = 0;
         for(countTestNumber = 0; countTestNumber< 3; countTestNumber++){
-            if(test[countTestNumber].userAns === test[countTestNumber].answer){
+            const {topic,wordcardsTag,testID,answer,userAns} = test[countTestNumber];
+            if(userAns === answer){
               score_temp++;
               test.splice(countTestNumber,1,{
-                topic: test[countTestNumber].topic,
-                testID: test[countTestNumber].testID,
+                topic: topic,
+                wordcardsTag: wordcardsTag,
+                testID: testID,
                 highlightQ: false,
                 submitted: true,
-                answer: test[countTestNumber].answer,
-                userAns: test[countTestNumber].userAns,
+                answer: answer,
+                userAns: userAns,
+              })
+              
+              var now = new Date();
+              let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
+              const {name, trans, testTime, number, total, inputTime} = WordList.wordcards[wordcardsTag];
+              WordList.wordcards.splice(wordcardsTag,1,{
+                name: name,
+                trans: trans,
+                testTime: testTime,
+                number: number,
+                total: total,
+                updateTime: nowString,
+                inputTime: inputTime
               })
             }else{
               test.splice(countTestNumber,1,{
-                topic: test[countTestNumber].topic,
-                testID: test[countTestNumber].testID,
+                topic: topic,
+                wordcardsTag: wordcardsTag,
+                testID: testID,
                 highlightQ: true,
                 submitted: true,
-                answer: test[countTestNumber].answer,
-                userAns: test[countTestNumber].userAns,
+                answer: answer,
+                userAns: userAns,
               })
-              
+              var now = new Date();
+              let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
+              const {name, trans, testTime, number, total, inputTime} = WordList.wordcards[wordcardsTag];
+              const newTestTime = parseInt(testTime,10) + 1;
+              WordList.wordcards.splice(wordcardsTag,1,{
+                name: name,
+                trans: trans,
+                testTime: newTestTime,
+                number: number,
+                total: total,
+                updateTime: nowString,
+                inputTime: inputTime
+              })
             }
         }
         if(score_temp === 0)score_temp = 0;
@@ -135,7 +166,17 @@ class WordReview_Trans extends Component {
         else if(score_temp === 3)score_temp = 100;
         else score_temp = -1;
         this.setState({
-            score: score_temp
+            score: score_temp,
+            test: test,
+            WordList: WordList
+        });
+        fetch('/api/wordreview',{
+          method: 'post',
+          headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+          },
+          body: JSON.stringify(WordList.wordcards),
         });
     }
 
