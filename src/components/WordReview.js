@@ -256,7 +256,7 @@ class WordReview extends Component {
             <section>{test.map(this.handleTest,this)}</section>
             <h4 className="test-foot">Score: {score}</h4>
             <div className="test-foot">
-                <button type = "button" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button> &nbsp;
+                <button type = "submit" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button> &nbsp;
                 <Link to ={'/wordreview'}><button type="button" className="btn btn-danger" onClick =""> Reset </button></Link> &nbsp;
                 <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
             </div>
