@@ -6,14 +6,12 @@ import WordReview from './components/WordReview';
 import WordReview_Trans from './components/WordReview_Trans';
 import ReviewMode from './components/ReviewMode';
 import info from './components/info';
-import designer from './components/designer';
 
 export default (
   <Route path="/">
     <IndexRedirect to="/mywordlist" />
-      <Route path ="/mywordlist" component = {MyWordList} />
       <Route path ="/info"       component = {info}       />
-      <Route path ="/designer"   component = {designer}   />
+      <Route path ="/mywordlist" component = {MyWordList} />
       <Route path ="/wordreview" component = {WordReview} />
       <Route path ="/wordreview_trans" component = {WordReview_Trans} />
       <Route path ="/reviewmode" component = {ReviewMode} />

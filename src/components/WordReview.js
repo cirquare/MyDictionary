@@ -19,6 +19,7 @@ class WordReview extends Component {
   setWordList(temp){
     this.setState({WordList:temp});
   }
+
   setTest(temp){
     let countTestNumber = 0;
     let countSelection = 0;
@@ -85,6 +86,7 @@ class WordReview extends Component {
       })
     }
   }
+ 
   handleTest(test, i){
     const {topic, submitted, highlightQ, selection, selectedValue} = test;
     const questionNumber = i + 1;
@@ -115,6 +117,7 @@ class WordReview extends Component {
         );
     }
   }
+  
   handleSelectionList(oneSelection,i){
     const {title, testNumber, checked, highlight} = oneSelection;
     const {selectedValue, submitted} = this.state.test[testNumber];
@@ -189,10 +192,11 @@ class WordReview extends Component {
         let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
         const {wordcardsTag} = test[countTopic];
         const {name, trans, testTime, number, total, inputTime} = WordList.wordcards[wordcardsTag];
+        const newTestTime = parseInt(testTime,10) - 1;
         WordList.wordcards.splice(wordcardsTag,1,{
           name: name,
           trans: trans,
-          testTime: testTime,
+          testTime: newTestTime,
           number: number,
           total: total,
           updateTime: nowString,
@@ -251,74 +255,51 @@ class WordReview extends Component {
     });
   }
   handleReset(){
-    let countTestNumber = 0;
-    let countSelection = 0;
-    let countTestTopic = 0;
-    let index = [0,0,0];
-    let checkRepeat = 0;
-    let shuffleSelection = 0;
-    const {test,score} = this.state;
-    for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
-      const {WordList} = this.state;
-      const {wordcards} = WordList;
-      const length = wordcards.length;
-
-      let wordcardsADDtt = [];
-      let recordADDmap = [];
-      let countWordCards = 0;
-      for(;countWordCards<length;countWordCards++){
-        const wordcard = wordcards[countWordCards];
-        let countADDtt = 0;
-        let countADDttMax = wordcard.testTime;
-        if(countADDttMax == 0 && wordcard.updateTime == wordcard.inputTime){
-          countADDttMax = length/5;
-        }
-        for(;countADDtt<countADDttMax;countADDtt++){
-          wordcardsADDtt.push(wordcards[countWordCards]);
-          recordADDmap.push(countWordCards);
-        }
-      }
-      const lengthADDtt = wordcardsADDtt.length;
-      let SelectionRepeat = true;
-      index = [0,0,0];
-      while(SelectionRepeat){
-        for (countSelection = 0; countSelection<3; countSelection ++){
-          index[countSelection] = Math.floor(Math.random()*lengthADDtt);
-        }
-        const name1 = wordcardsADDtt[index[0]].name;
-        const name2 = wordcardsADDtt[index[1]].name;
-        const name3 = wordcardsADDtt[index[2]].name;
-        SelectionRepeat = (name1 == name2)?true:
-          (name2 == name3)?true:(name3==name1)?true:false;
-      }
-      shuffleSelection = Math.floor(Math.random()*3);
-      if (countTestNumber>0){
-        for (countTestTopic = 0;countTestTopic<countTestNumber;countTestTopic++){
-          if(wordcardsADDtt[index[shuffleSelection]].name === test[countTestTopic].topic){
-            shuffleSelection = Math.floor(Math.random()*3);
-            countTestTopic--;
+        let countTestNumber = 0;
+        let countSelection = 0;
+        let countTestTopic = 0;
+        let index = [0,0,0];
+        let checkRepeat = 0;
+        let shuffleSelection = 0;
+        const {WordList, test} = this.state;
+        for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
+          const {wordcards} = WordList;
+          const length = wordcards.length;
+          index = [0,0,0];
+          while(index[0] === index[1] || index[1] === index[2] || index[0] === index[2]){
+            for (countSelection = 0; countSelection<3; countSelection ++){
+              index[countSelection] = Math.floor(Math.random()*length);
+            }
           }
+          shuffleSelection = Math.floor(Math.random()*3);
+          if (countTestNumber>0){
+            for (countTestTopic = 0;countTestTopic<countTestNumber;countTestTopic++){
+              if(wordcards[index[shuffleSelection]].name === test[countTestTopic].topic){
+                shuffleSelection = Math.floor(Math.random()*3);
+                countTestTopic--;
+              }
+            }
+          }
+          test.splice(countTestNumber,1,{
+            topic: wordcards[index[shuffleSelection]].name,
+            wordcardsTag:index[shuffleSelection],
+            answer: shuffleSelection,
+            submitted: false,
+            highlightQ: false,
+            selectedValue: '',
+            selection: [
+              {highlight:false,title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
+              {highlight:false,title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
+              {highlight:false,title: wordcards[index[2]].trans,checked:false,testNumber:countTestNumber}
+            ]
+          })
         }
-      }
-      test.splice(countTestNumber,1,{
-        topic: wordcardsADDtt[index[shuffleSelection]].name,
-        wordcardsTag:recordADDmap[index[shuffleSelection]],
-        answer: shuffleSelection,
-        submitted: false,
-        highlightQ: false,
-        selectedValue: '',
-        selection: [
-          {highlight:false,title: wordcardsADDtt[index[0]].trans,checked:false,testNumber:countTestNumber},
-          {highlight:false,title: wordcardsADDtt[index[1]].trans,checked:false,testNumber:countTestNumber},
-          {highlight:false,title: wordcardsADDtt[index[2]].trans,checked:false,testNumber:countTestNumber}
-        ]
-      })
-    }
-    this.setState({
-      test:test,
-      score:0
-    });
+        this.setState({
+          test: test,
+          score: 0
+        });
   }
+
   componentDidMount() {
     fetch('/api/mywordlist')
       .then(function(res){return res.json()})
@@ -335,22 +316,24 @@ class WordReview extends Component {
             <div className="homepage-btn-crew">
                 <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">
                     Info</button></Link> &nbsp;
-                <Link to ={'/designer'}><button type="button" className="btn btn-success homepage-btn">
-                    Designer</button></Link> &nbsp;
+                <Link to ={'/mywordlist'}><button type="button" className="btn btn-success homepage-btn">
+                    My Word List</button></Link> &nbsp;
                 <Link to ={'/wordreview'}><button type="button" disabled="disabled"className="btn btn-warning homepage-btn">
                     Selection Test</button></Link> &nbsp;
                 <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
                     Translation Test</button></Link> &nbsp;
-                <button type="button" className="btn btn-default btn-change homepage-btn">Contact Us</button> 
+                <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
+                    Review</button></Link>
             </div>
             <br/>
           <small className="Select-subtitle">Please select the correct translation to the following words.</small> <br></br>
             <section>{test.map(this.handleTest,this)}</section>
             <h4 className="test-foot">Score: {score}</h4>
             <div className="test-foot">
-                <button type = "submit" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button> &nbsp;
-                <button type="submit" className="btn btn-danger" onClick ={this.handleReset.bind(this)}> Reset </button>
-                <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
+                <button type = "button" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>
+                    submit</button> &nbsp;
+                <button type="submit" className="btn btn-danger" onClick ={this.handleReset.bind(this)}> 
+                    Reset </button>
             </div>
         </div>
         );
