@@ -53,12 +53,12 @@ class WordReview_Trans extends Component {
     }
 
     handleTransTest(test,i){
-        const {topic,testID,userAns,submitted,highlightQ} = test;
+        const {topic,testID,userAns,submitted,highlightQ,answer} = test;
         const questionNumber = test.testID;
         if(submitted && highlightQ){
           return(
             <div>
-              <h4 className ="text-warning question-warn"><b>Question {questionNumber} : {topic}</b></h4>
+              <h4 className ="text-warning question-warn"><b>Question {questionNumber} : {topic}({answer})</b></h4>
               <form name="formName" className="Trans-blank">
                 <Translation
                   value = {userAns}
