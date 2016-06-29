@@ -166,10 +166,11 @@ class WordReview extends Component {
         let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
         const {wordcardsTag} = test[countTopic];
         const {name, trans, testTime, number, total, inputTime} = WordList.wordcards[wordcardsTag];
+        const newTestTime = parseInt(testTime,10) - 1;
         WordList.wordcards.splice(wordcardsTag,1,{
           name: name,
           trans: trans,
-          testTime: testTime,
+          testTime: newTestTime,
           number: number,
           total: total,
           updateTime: nowString,
