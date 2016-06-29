@@ -19,6 +19,7 @@ class WordReview extends Component {
   setWordList(temp){
     this.setState({WordList:temp});
   }
+
   setTest(temp){
     let countTestNumber = 0;
     let countSelection = 0;
@@ -30,16 +31,39 @@ class WordReview extends Component {
       const {WordList, test} = this.state;
       const {wordcards} = WordList;
       const length = wordcards.length;
-      index = [0,0,0];
-      while(index[0] === index[1] || index[1] === index[2] || index[0] === index[2]){
-        for (countSelection = 0; countSelection<3; countSelection ++){
-          index[countSelection] = Math.floor(Math.random()*length);
+
+      let wordcardsADDtt = [];
+      let recordADDmap = [];
+      let countWordCards = 0;
+      for(;countWordCards<length;countWordCards++){
+        const wordcard = wordcards[countWordCards];
+        let countADDtt = 0;
+        let countADDttMax = wordcard.testTime;
+        if(countADDttMax == 0 && wordcard.updateTime == wordcard.inputTime){
+          countADDttMax = length/5;
         }
+        for(;countADDtt<countADDttMax;countADDtt++){
+          wordcardsADDtt.push(wordcards[countWordCards]);
+          recordADDmap.push(countWordCards);
+        }
+      }
+      const lengthADDtt = wordcardsADDtt.length;
+      let SelectionRepeat = true;
+      index = [0,0,0];
+      while(SelectionRepeat){
+        for (countSelection = 0; countSelection<3; countSelection ++){
+          index[countSelection] = Math.floor(Math.random()*lengthADDtt);
+        }
+        const name1 = wordcardsADDtt[index[0]].name;
+        const name2 = wordcardsADDtt[index[1]].name;
+        const name3 = wordcardsADDtt[index[2]].name;
+        SelectionRepeat = (name1 == name2)?true:
+          (name2 == name3)?true:(name3==name1)?true:false;
       }
       shuffleSelection = Math.floor(Math.random()*3);
       if (countTestNumber>0){
         for (countTestTopic = 0;countTestTopic<countTestNumber;countTestTopic++){
-          if(wordcards[index[shuffleSelection]].name === test[countTestTopic].topic){
+          if(wordcardsADDtt[index[shuffleSelection]].name === test[countTestTopic].topic){
             shuffleSelection = Math.floor(Math.random()*3);
             countTestTopic--;
           }
@@ -47,21 +71,22 @@ class WordReview extends Component {
       }
       this.setState({
         test: test.concat({
-          topic: wordcards[index[shuffleSelection]].name,
-          wordcardsTag:index[shuffleSelection],
+          topic: wordcardsADDtt[index[shuffleSelection]].name,
+          wordcardsTag:recordADDmap[index[shuffleSelection]],
           answer: shuffleSelection,
           submitted: false,
           highlightQ: false,
           selectedValue: '',
           selection: [
-            {highlight:false,title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
-            {highlight:false,title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
-            {highlight:false,title: wordcards[index[2]].trans,checked:false,testNumber:countTestNumber}
+            {highlight:false,title: wordcardsADDtt[index[0]].trans,checked:false,testNumber:countTestNumber},
+            {highlight:false,title: wordcardsADDtt[index[1]].trans,checked:false,testNumber:countTestNumber},
+            {highlight:false,title: wordcardsADDtt[index[2]].trans,checked:false,testNumber:countTestNumber}
           ]
         })
       })
     }
   }
+ 
   handleTest(test, i){
     const {topic, submitted, highlightQ, selection, selectedValue} = test;
     const questionNumber = i + 1;
@@ -92,6 +117,7 @@ class WordReview extends Component {
         );
     }
   }
+  
   handleSelectionList(oneSelection,i){
     const {title, testNumber, checked, highlight} = oneSelection;
     const {selectedValue, submitted} = this.state.test[testNumber];
