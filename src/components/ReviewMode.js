@@ -150,9 +150,9 @@ class ReviewMode extends Component {
             </div>
             <div className="row">
               <div className="col-md-3"></div> 
-              <div className="col-md-4"> Top Ten Difficult 
+              <div className="col-md-4 top-ten-title"> Top Ten Difficult 
                     {TopTenCards.map(this.handleWordList.bind(this))}</div>
-              <div className="col-md-5"> Top Ten New 
+              <div className="col-md-5 top-ten-title"> Top Ten New 
                     {NewTenCards.map(this.handleWordList.bind(this))}</div>
             </div>
         </div>

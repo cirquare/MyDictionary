@@ -12,11 +12,11 @@ class MyWordList extends Component {
     super(props, context);
     this.state = {
       WordList: {wordcards:[]},
+      TopTenCards: [],
+      NewTenCards: [],  
       English: '',
       Chinese: '',
       ValidInput:'', 
-      TopTenTTList: {toptenttcards:[]},
-      NewTenList: {newtencards:[]},  
       SearchStr: '',
       SearchResult: ''
     };
@@ -97,8 +97,8 @@ class MyWordList extends Component {
 
     this.setState({
         WordList:temp,
-        TopTenTTList:topten,
-        NewTenList:newten
+        TopTenCards:topten,
+        NewTenCards:newten
     });
 
   }
@@ -214,9 +214,92 @@ class MyWordList extends Component {
     const {English, Chinese, ValidInput, SearchStr, 
       SearchResult} = this.state;
     const {wordcards} = this.state.WordList;
-    const {toptenttcards} = this.state.TopTenTTList;
-    const {newtencards} = this.state.NewTenList;
+    const {TopTenCards, NewTenCards} = this.state;
     if(ValidInput === ''){ 
+      return (
+          <div className="container">
+            <h1 className="homepage-title"><b>My WordList</b></h1>
+              <div className="homepage-btn-crew">
+                  <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">
+                    Info</button></Link> &nbsp;
+                  <Link to ={'/mywordlist'}><button type="button" disabled="disabled" className="btn btn-success homepage-btn">
+                    My Word List</button></Link> &nbsp;
+                  <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">
+                    Selection Test</button></Link> &nbsp;
+                  <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
+                    Translation Test</button></Link> &nbsp;
+                  <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
+                    Review</button></Link>
+              </div>
+                  <form className="homepage-input-instr">
+                      <div className="form-group input-btn-crew">   
+                          <input type="text" placeholder='English' className="homepage-input input-btn-change" 
+                                value = {English} onChange = {this.handleNewEnglish.bind(this)}/> &nbsp;
+                          <input type="text" placeholder='Chinese' className="homepage-input input-btn-change" 
+                                value = {Chinese} onChange = {this.handleNewChinese.bind(this)}/> &nbsp;
+                          <button type="submit" onClick = {this.handleSubmit.bind(this)} className="submit-btn">Submit</button>
+                      </div>
+                  </form>
+                  <section className="homepage-input-instr">
+                      <div className="form-group input-btn-crew">
+                          <input type="text" placeholder='Search for words...' className="homepage-input input-btn-change" 
+                                value = {SearchStr} onChange = {this.handleSearchStr.bind(this)}/> &nbsp;
+                          <button type="button" onClick = {this.handleSearch.bind(this)} className="submit-btn">Search</button>
+                          <span>{SearchResult}</span>
+                      </div>
+                  </section>
+                <div className="row">
+                  <div className="col-md-3"></div> 
+                  <div className="col-md-4 top-ten-title"> Top Ten Difficult 
+                        {TopTenCards.map(this.handleWordList.bind(this))}</div>
+                  <div className="col-md-5 top-ten-title"> &nbsp; &nbsp;Top Ten New 
+                        {NewTenCards.map(this.handleWordList.bind(this))}</div>
+                </div>
+          </div>
+          );
+    }else if(ValidInput === 'Input Fail'){
+      return (
+          <div className="container">
+            <h1 className="homepage-title"><b>My WordList</b></h1>
+              <div className="homepage-btn-crew">
+                  <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">
+                    Info</button></Link> &nbsp;
+                  <Link to ={'/mywordlist'}><button type="button" disabled="disabled" className="btn btn-success homepage-btn">
+                    My Word List</button></Link> &nbsp;
+                  <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">
+                    Selection Test</button></Link> &nbsp;
+                  <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
+                    Translation Test</button></Link> &nbsp;
+                  <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
+                    Review</button></Link>
+              </div>
+              <form className="homepage-input-instr">
+                  <div className="form-group input-btn-crew">   
+                      <input type="text" placeholder='Empty!' className="homepage-input input-btn-change" 
+                            value = {English} onChange = {this.handleNewEnglish.bind(this)}/> &nbsp;
+                      <input type="text" placeholder='Empty!' className="homepage-input input-btn-change" 
+                            value = {Chinese} onChange = {this.handleNewChinese.bind(this)}/> &nbsp;
+                      <button type="submit" onClick = {this.handleSubmit.bind(this)} className="submit-btn">Submit</button>
+                  </div>
+              </form>
+              <section className="homepage-input-instr">
+                  <div className="form-group input-btn-crew">   
+                      <input type="text" placeholder='Search for words...' className="homepage-input input-btn-change" 
+                            value = {SearchStr} onChange = {this.handleSearchStr.bind(this)}/> &nbsp;
+                      <button type="button" onClick = {this.handleSearch.bind(this)} className="submit-btn">Search</button>
+                      <span>{SearchResult}</span>
+                  </div>
+              </section>
+                <div className="row">
+                  <div className="col-md-3"></div> 
+                  <div className="col-md-4 top-ten-title"> Top Ten Difficult 
+                        {TopTenCards.map(this.handleWordList.bind(this))}</div>
+                  <div className="col-md-5 top-ten-title"> &nbsp; &nbsp;Top Ten New 
+                        {NewTenCards.map(this.handleWordList.bind(this))}</div>
+                </div>
+          </div>
+          );
+    }else{
       return (
           <div className="container">
             <h1 className="homepage-title"><b>My WordList</b></h1>
@@ -238,92 +321,24 @@ class MyWordList extends Component {
                             value = {English} onChange = {this.handleNewEnglish.bind(this)}/> &nbsp;
                       <input type="text" placeholder='Chinese' className="homepage-input input-btn-change" 
                             value = {Chinese} onChange = {this.handleNewChinese.bind(this)}/> &nbsp;
-                      <input type="submit" value="Add To List" onClick = {this.handleSubmit.bind(this)} className="submit-btn"/>
+                      <button type="button" onClick = {this.handleSubmit.bind(this)} className="submit-btn">Submit</button>
                   </div>
               </form>
-              <form className="homepage-input-instr">
+              <section className="homepage-input-instr">
                   <div className="form-group input-btn-crew">   
-                      <input type="text" placeholder='Search for words...' className="homepage-input input-btn-change" value = {SearchStr} onChange = {this.handleSearchStr.bind(this)}/> &nbsp;
-                      <button onClick = {this.handleSearch.bind(this)} className="submit-btn">Search</button>
+                      <input type="text" placeholder='Empty!' className="homepage-input input-btn-change" 
+                            value = {SearchStr} onChange = {this.handleSearchStr.bind(this)}/> &nbsp;
+                      <button type="submit" onClick = {this.handleSearch.bind(this)} className="submit-btn">Search</button>
                       <span>{SearchResult}</span>
                   </div>
-              </form>
-              
-              <span>
-                  {wordcards.map(this.handleWordList.bind(this))}
-              </span>
-          </div>
-          );
-    }else if(ValidInput === 'Input Fail'){
-      return (
-          <div className="container">
-            <h1 className="homepage-title"><b>My WordList</b></h1>
-              <div className="homepage-btn-crew">
-                  <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">
-                    Info</button></Link> &nbsp;
-                  <Link to ={'/mywordlist'}><button type="button" disabled="disabled" className="btn btn-success homepage-btn">
-                    My Word List</button></Link> &nbsp;
-                  <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">
-                    Selection Test</button></Link> &nbsp;
-                  <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
-                    Translation Test</button></Link> &nbsp;
-                  <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
-                    Review</button></Link>
-              </div>
-              <form className="homepage-input-instr">
-                  <div className="form-group input-btn-crew">   
-                      <input type="text" placeholder='Empty!' className="homepage-input input-btn-change" value = {English} onChange = {this.handleNewEnglish.bind(this)}/> &nbsp;
-                      <input type="text" placeholder='Empty!' className="homepage-input input-btn-change" value = {Chinese} onChange = {this.handleNewChinese.bind(this)}/> &nbsp;
-                      <input type="submit" value="Add To List" onClick = {this.handleSubmit.bind(this)} className="submit-btn"/>
-                  </div>
-              </form>
-              <form className="homepage-input-instr">
-                  <div className="form-group input-btn-crew">   
-                      <input type="text" placeholder='Search for words...' className="homepage-input input-btn-change" value = {SearchStr} onChange = {this.handleSearchStr.bind(this)}/> &nbsp;
-                      <button onClick = {this.handleSearch.bind(this)} className="submit-btn">Search</button>
-                      <span>{SearchResult}</span>
-                  </div>
-              </form>
-              
-              <span>
-                  {wordcards.map(this.handleWordList.bind(this))}
-              </span>
-          </div>
-          );
-    }else{
-      return (
-          <div className="container">
-            <h1 className="homepage-title"><b>My WordList</b></h1>
-              <div className="homepage-btn-crew">
-                  <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">
-                    Info</button></Link> &nbsp;
-                  <Link to ={'/mywordlist'}><button type="button" disabled="disabled" className="btn btn-success homepage-btn">
-                    My Word List</button></Link> &nbsp;
-                  <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">
-                    Selection Test</button></Link> &nbsp;
-                  <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
-                    Translation Test</button></Link> &nbsp;
-                  <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
-                    Review</button></Link>
-              </div>
-              <form className="homepage-input-instr">
-                  <div className="form-group input-btn-crew">   
-                      <input type="text" placeholder='English' className="homepage-input input-btn-change" value = {English} onChange = {this.handleNewEnglish.bind(this)}/> &nbsp;
-                      <input type="text" placeholder='Chinese' className="homepage-input input-btn-change" value = {Chinese} onChange = {this.handleNewChinese.bind(this)}/> &nbsp;
-                      <input type="submit" value="Add To List" onClick = {this.handleSubmit.bind(this)} className="submit-btn"/>
-                  </div>
-              </form>
-              <form className="homepage-input-instr">
-                  <div className="form-group input-btn-crew">   
-                      <input type="text" placeholder='Empty!' className="homepage-input input-btn-change" value = {SearchStr} onChange = {this.handleSearchStr.bind(this)}/> &nbsp;
-                      <button onClick = {this.handleSearch.bind(this)} className="submit-btn">Search</button>
-                      <span>{SearchResult}</span>
-                  </div>
-              </form>
-              
-              <span>
-                  {wordcards.map(this.handleWordList.bind(this))}
-              </span>
+              </section>
+                <div className="row">
+                  <div className="col-md-3"></div> 
+                  <div className="col-md-4 top-ten-title"> Top Ten Difficult 
+                        {TopTenCards.map(this.handleWordList.bind(this))}</div>
+                  <div className="col-md-5 top-ten-title"> &nbsp; &nbsp;Top Ten New 
+                        {NewTenCards.map(this.handleWordList.bind(this))}</div>
+                </div>
           </div>
           );
     }

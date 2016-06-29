@@ -243,7 +243,7 @@ class WordReview_Trans extends Component {
                 <h4 className="test-foot">Score: {score}</h4>
                 <div className="test-foot">    
                     <button type="button" className="btn btn-success" onClick = {this.handleTransScore.bind(this)}>submit</button> &nbsp;
-                    <button type="button" className="btn btn-danger" onClick = ''> Reset </button> &nbsp;
+                    <form><button type="submit" className="btn btn-danger" onClick = {this.reloadTest.bind(this)}> Reset </button></form>
                 </div>
             </div>
         );

@@ -173,3 +173,14 @@ input:focus{outline:none}
     text-align: justify;
     text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
 }
+
+.top-ten-title {
+    color:red;
+    font-size: 20px;
+    font-family: cursive;
+    padding-top: 10px;
+}
+
+.img {
+    border-radius: 50px;
+}

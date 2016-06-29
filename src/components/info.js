@@ -36,7 +36,9 @@ class info extends Component {
                     <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
                         Review</button></Link>
                 </div>
+                <img width="100" height="100" className="img" src="../../public/cat01.jpg"/>
             </div>
+
         );  
     }
 
