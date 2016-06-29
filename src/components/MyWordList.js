@@ -16,7 +16,7 @@ class MyWordList extends Component {
       Chinese: '',
       ValidInput: '',
       SearchStr: '',
-      SearchResult: ''
+      SearchResult: '',
     };
   }
 
@@ -241,5 +241,12 @@ class MyWordList extends Component {
     }
   }
 }
-
+MyWordList.propTypes = {
+  WordList: React.PropTypes.object,
+  English: React.PropTypes.string,
+  Chinese: React.PropTypes.string,
+  ValidInput: React.PropTypes.string,
+  SearchStr: React.PropTypes.string,
+  SearchResult: React.PropTypes.string,
+}
 export default MyWordList;

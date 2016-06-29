@@ -227,6 +227,51 @@ class WordReview extends Component {
       body: JSON.stringify(WordList.wordcards),
     });
   }
+  handleReset(){
+    let countTestNumber = 0;
+    let countSelection = 0;
+    let countTestTopic = 0;
+    let index = [0,0,0];
+    let checkRepeat = 0;
+    let shuffleSelection = 0;
+    const {WordList, test} = this.state;
+    for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
+      const {wordcards} = WordList;
+      const length = wordcards.length;
+      index = [0,0,0];
+      while(index[0] === index[1] || index[1] === index[2] || index[0] === index[2]){
+        for (countSelection = 0; countSelection<3; countSelection ++){
+          index[countSelection] = Math.floor(Math.random()*length);
+        }
+      }
+      shuffleSelection = Math.floor(Math.random()*3);
+      if (countTestNumber>0){
+        for (countTestTopic = 0;countTestTopic<countTestNumber;countTestTopic++){
+          if(wordcards[index[shuffleSelection]].name === test[countTestTopic].topic){
+            shuffleSelection = Math.floor(Math.random()*3);
+            countTestTopic--;
+          }
+        }
+      }
+      test.splice(countTestNumber,1,{
+        topic: wordcards[index[shuffleSelection]].name,
+        wordcardsTag:index[shuffleSelection],
+        answer: shuffleSelection,
+        submitted: false,
+        highlightQ: false,
+        selectedValue: '',
+        selection: [
+          {highlight:false,title: wordcards[index[0]].trans,checked:false,testNumber:countTestNumber},
+          {highlight:false,title: wordcards[index[1]].trans,checked:false,testNumber:countTestNumber},
+          {highlight:false,title: wordcards[index[2]].trans,checked:false,testNumber:countTestNumber}
+        ]
+      })
+    }
+    this.setState({
+      test: test,
+      score: 0
+    });
+  }
   componentDidMount() {
     fetch('/api/mywordlist')
       .then(function(res){return res.json()})
@@ -257,7 +302,7 @@ class WordReview extends Component {
             <h4 className="test-foot">Score: {score}</h4>
             <div className="test-foot">
                 <button type = "submit" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button> &nbsp;
-                <Link to ={'/wordreview'}><button type="button" className="btn btn-danger" onClick =""> Reset </button></Link> &nbsp;
+                <button type="submit" className="btn btn-danger" onClick ={this.handleReset.bind(this)}> Reset </button>
                 <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
             </div>
         </div>
