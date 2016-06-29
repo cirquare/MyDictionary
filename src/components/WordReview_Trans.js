@@ -153,8 +153,8 @@ class WordReview_Trans extends Component {
             <div className="container">
                 <h1 className="Trans-title"><b>Translation Test</b></h1>
             <div className="homepage-btn-crew">
-                <button type="button" className="btn btn-info homepage-btn">Info</button> &nbsp;
-                <button type="button" className="btn btn-success homepage-btn">Designer</button> &nbsp;
+                <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">Info</button></Link> &nbsp;
+                <Link to ={'/designer'}><button type="button" className="btn btn-success homepage-btn">Designer</button></Link> &nbsp;
                 <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">Selection Test</button></Link> &nbsp;
                 <Link to ={'/wordreview_trans'}><button type="button" disabled="disabled"className="btn btn-danger homepage-btn">
                     Translation Test</button></Link> &nbsp;

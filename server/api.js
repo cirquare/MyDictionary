@@ -23,6 +23,7 @@ router.get('/mywordlist',function(req, res){
       //console.log(data);
       wordcards.push(data);
       console.log(wordcards[countWordCards].name);
+      console.log(wordcards[countWordCards].testTime);
       wordlist = {wordcards:wordcards};
       if(wordlist.wordcards[countWordCards].number === 
          wordlist.wordcards[countWordCards].total){
@@ -31,10 +32,6 @@ router.get('/mywordlist',function(req, res){
       }
       countWordCards ++;
     })
-})
-
-router.get('/reviewmode',function(req,res){
-    res.json(WordList)
 })
 
 router.get('/users/:username', function(req, res){

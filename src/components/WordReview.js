@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import 'babel-polyfill';
 import fetch from 'isomorphic-fetch';
 import Selection from './Selection'
+import date from 'date-and-time';
 import './MyWordList.css';
 
 class WordReview extends Component {
@@ -21,6 +22,7 @@ class WordReview extends Component {
   setTest(temp){
     let countTestNumber = 0;
     let countSelection = 0;
+    let countTestTopic = 0;
     let index = [0,0,0];
     let checkRepeat = 0;
     let shuffleSelection = 0;
@@ -35,9 +37,18 @@ class WordReview extends Component {
         }
       }
       shuffleSelection = Math.floor(Math.random()*3);
+      if (countTestNumber>0){
+        for (countTestTopic = 0;countTestTopic<countTestNumber;countTestTopic++){
+          if(wordcards[index[shuffleSelection]].name === test[countTestTopic].topic){
+            shuffleSelection = Math.floor(Math.random()*3);
+            countTestTopic--;
+          }
+        }
+      }
       this.setState({
         test: test.concat({
           topic: wordcards[index[shuffleSelection]].name,
+          wordcardsTag:index[shuffleSelection],
           answer: shuffleSelection,
           submitted: false,
           highlightQ: false,
@@ -74,7 +85,7 @@ class WordReview extends Component {
       return(
         <div>
           <h4 className="question">Question {questionNumber}: {topic}</h4>
-          <div>
+          <div className="">
             <ul>{selection.map(this.handleSelectionList,this)}</ul>
           </div>
         </div>
@@ -84,6 +95,8 @@ class WordReview extends Component {
   handleSelectionList(oneSelection,i){
     const {title, testNumber, checked, highlight} = oneSelection;
     const {selectedValue, submitted} = this.state.test[testNumber];
+    var forceChecked = false;
+    if(selectedValue == title && submitted)forceChecked = true;
     return(
         <Selection
           className="question"
@@ -91,7 +104,8 @@ class WordReview extends Component {
           highlight = {highlight}
           testNumber = {testNumber}
           checked = {checked}
-          disabled = {submitted}
+          forceChecked = {forceChecked}
+          submitted = {submitted}
           selectedValue = {selectedValue}
           title = {title}
           onChange = {this.handleSelectionChecked.bind(this)}
@@ -100,29 +114,39 @@ class WordReview extends Component {
   }
   handleSelectionChecked(event, i, testNumber){
     const {test} = this.state;
-    //test[testNumber].selectedValue = event.target.checked;
-    test.splice(testNumber,1,{
-      topic: test[testNumber].topic,
-      submitted: test[testNumber].submitted,
-      highlightQ: test[testNumber].highlightQ,
-      answer: test[testNumber].answer,
-      selectedValue: event.target.value,
-      selection: test[testNumber].selection
-    });
-    this.setState({
-      test: test
-    });
+    const {submitted} = test[testNumber];
+    if(!submitted){
+      test.splice(testNumber,1,{
+        topic: test[testNumber].topic,
+        wordcardsTag: test[testNumber].wordcardsTag,
+        submitted: test[testNumber].submitted,
+        highlightQ: test[testNumber].highlightQ,
+        answer: test[testNumber].answer,
+        selectedValue: event.target.value,
+        selection: test[testNumber].selection
+      });
+      let countSelection = 0;
+      for(;countSelection < 3;countSelection ++){
+        test[testNumber].selection.splice(countSelection,1,{
+          highlight:test[testNumber].selection[countSelection].highlight,
+          title:test[testNumber].selection[countSelection].title,
+          checked:false,
+          testNumber:test[testNumber].selection[countSelection].testNumber
+        });
+      }
+      test[testNumber].selection.splice(i,1,{
+        highlight:test[testNumber].selection[i].highlight,
+        title:test[testNumber].selection[i].title,
+        checked:event.target.checked,
+        testNumber:test[testNumber].selection[i].testNumber
+      });
+      this.setState({
+        test: test
+      });
+    }
   }
   handleScore(){
     const {test, score,WordList} = this.state;
-    fetch('/api/wordreview',{
-      method: 'post',
-      headers:{
-        'Accept':'application/json',
-        'Content-Type':'application/json',
-      },
-      body: JSON.stringify(WordList.wordcards),
-    });
     let score_temp = 0;
     let countTopic = 0;
     for(countTopic = 0; countTopic<3; countTopic++){
@@ -131,15 +155,30 @@ class WordReview extends Component {
         score_temp = score_temp + 1;
         test.splice(countTopic,1,{
           topic: test[countTopic].topic,
+          wordcardsTag: test[countTopic].wordcardsTag,
           submitted: true,
           highlightQ: false,
           answer: test[countTopic].answer,
           selectedValue: test[countTopic].selectedValue,
           selection: test[countTopic].selection
         });
+        var now = new Date();
+        let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
+        const {wordcardsTag} = test[countTopic];
+        const {name, trans, testTime, number, total, inputTime} = WordList.wordcards[wordcardsTag];
+        WordList.wordcards.splice(wordcardsTag,1,{
+          name: name,
+          trans: trans,
+          testTime: testTime,
+          number: number,
+          total: total,
+          updateTime: nowString,
+          inputTime: inputTime
+        })
       }else{
         test.splice(countTopic,1,{
           topic: test[countTopic].topic,
+          wordcardsTag: test[countTopic].wordcardsTag,
           submitted: true,
           highlightQ: true,
           answer: test[countTopic].answer,
@@ -152,6 +191,20 @@ class WordReview extends Component {
           checked:test[countTopic].selection[answer].checked,
           testNumber:test[countTopic].selection[answer].testNumber
         });
+        var now = new Date();
+        let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
+        const {wordcardsTag} = test[countTopic];
+        const {name, trans, testTime, number, total, inputTime} = WordList.wordcards[wordcardsTag];
+        const newTestTime = parseInt(testTime,10) + 1;
+        WordList.wordcards.splice(wordcardsTag,1,{
+          name: name,
+          trans: trans,
+          testTime: newTestTime,
+          number: number,
+          total: total,
+          updateTime: nowString,
+          inputTime: inputTime
+        })
       }
     }
     if(score_temp === 0)score_temp = 0;
@@ -162,7 +215,16 @@ class WordReview extends Component {
 
     this.setState({
       test: test,
-      score: score_temp
+      score: score_temp,
+      WordList: WordList
+    });
+    fetch('/api/wordreview',{
+      method: 'post',
+      headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(WordList.wordcards),
     });
   }
   componentDidMount() {
@@ -179,14 +241,15 @@ class WordReview extends Component {
         <div className="container">
           <h1 className="Select-title"><b>Selection Test</b></h1>
             <div className="homepage-btn-crew">
-                <button type="button" className="btn btn-info homepage-btn">Info</button> &nbsp;
-                <button type="button" className="btn btn-success homepage-btn">Designer</button> &nbsp;
+                <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">
+                    Info</button></Link> &nbsp;
+                <Link to ={'/designer'}><button type="button" className="btn btn-success homepage-btn">
+                    Designer</button></Link> &nbsp;
                 <Link to ={'/wordreview'}><button type="button" disabled="disabled"className="btn btn-warning homepage-btn">
                     Selection Test</button></Link> &nbsp;
                 <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
                     Translation Test</button></Link> &nbsp;
-                <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
-                    Review</button></Link>  
+                <button type="button" className="btn btn-default btn-change homepage-btn">Contact Us</button> 
             </div>
             <br/>
           <small className="Select-subtitle">Please select the correct translation to the following words.</small> <br></br>
@@ -194,7 +257,7 @@ class WordReview extends Component {
             <h4 className="test-foot">Score: {score}</h4>
             <div className="test-foot">
                 <button type = "button" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button> &nbsp;
-                <button type="button" className="btn btn-danger" onClick =""> Reset </button> &nbsp;
+                <Link to ={'/wordreview'}><button type="button" className="btn btn-danger" onClick =""> Reset </button></Link> &nbsp;
                 <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
             </div>
         </div>

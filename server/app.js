@@ -33,13 +33,14 @@ app.use(bodyParser.json());
 app.post('/api/wordreview',function(req,res){
   //var wordcards = JSON.stringify(req.body);
   var wordcards = req.body;
-  console.log(wordcards);
-  console.log(typeof(wordcards));
+  //console.log(wordcards);
+  //console.log(typeof(wordcards));
   var json2csv = require('json2csv');
-  var fields = ['name','trans','testTime','number','total'];
+  var fields = ['name','trans','testTime','number',
+                'total','updateTime','inputTime'];
   var fs = require('fs');
   var path = require('path');
-  var filePath = path.join(__dirname, 'test.csv');
+  var filePath = path.join(__dirname, 'wordlist.csv');
   var opts = {
     data: wordcards,
     fields: fields,
@@ -47,18 +48,13 @@ app.post('/api/wordreview',function(req,res){
   };
   json2csv(opts,function(err, csv){
     if(err)console.log(err);
-    console.log(csv);
+    //console.log(csv);
     fs.writeFile(filePath,csv,function(err){
       if(err)throw err;
       console.log('file saved');
     });
   });
-  /*
-  fs.writeFile(filePath, JSON.stringify(req.body), function (err) {
-    if (err) return console.log(err);
-    console.log('write done');
-  });
-  */
+  //req.end();
 });
 
 app.use('*', (req, res) => {
