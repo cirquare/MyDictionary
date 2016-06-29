@@ -25,14 +25,35 @@ class WordReview_Trans extends Component {
         let countTestNumber = 0;
         let countSelection = 0;
         let index = [0,0,0];
-        let checkRepeat = 0;
-        while(index[0] === index[1] || index[1] === index[2] || index[0] === index[2]){
-            const { WordList, test } = this.state;
-            const { wordcards } = WordList;
-            const length = wordcards.length;
+        const { WordList, test } = this.state;
+        const { wordcards } = WordList;
+        const length = wordcards.length;
+        let wordcardsADDtt = [];
+        let recordADDmap = [];
+        let countWordCards = 0;
+        for (;countWordCards<length;countWordCards++){
+          const wordcard = wordcards[countWordCards];
+          let countADDtt = 0;
+          let countADDttMax = wordcard.testTime;
+          if(countADDttMax == 0 && wordcard.updateTime == wordcard.inputTime){
+            countADDttMax = length/5;
+          }
+          for(;countADDtt<countADDttMax;countADDtt++){
+            wordcardsADDtt.push(wordcards[countWordCards]);
+            recordADDmap.push(countWordCards);
+          }
+        }
+        const lengthADDtt = wordcardsADDtt.length;
+        let TopicRepeat = true; 
+        while(TopicRepeat){
             for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
-                index[countTestNumber] = Math.floor(Math.random()*length);
+                index[countTestNumber] = Math.floor(Math.random()*lengthADDtt);
             }
+            const name1 = wordcardsADDtt[index[0]].name;
+            const name2 = wordcardsADDtt[index[1]].name;
+            const name3 = wordcardsADDtt[index[2]].name;
+            TopicRepeat = (name1 == name2)?true:
+              (name2 == name3)?true:(name3 == name1)?true:false;
         }
         for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
             const { WordList, test } = this.state;
@@ -40,12 +61,12 @@ class WordReview_Trans extends Component {
             const length = wordcards.length;
             this.setState({
                 test: test.concat({
-                  topic: wordcards[index[countTestNumber]].trans,
-                  wordcardsTag: index[countTestNumber],
+                  topic: wordcardsADDtt[index[countTestNumber]].trans,
+                  wordcardsTag: recordADDmap[index[countTestNumber]],
                   testID: countTestNumber+1,
                   highlightQ: false,
                   submitted: false,
-                  answer: wordcards[index[countTestNumber]].name,
+                  answer: wordcardsADDtt[index[countTestNumber]].name,
                   userAns: "",
                 })
             })
@@ -55,30 +76,47 @@ class WordReview_Trans extends Component {
         let countTestNumber = 0;
         let countSelection = 0;
         let index = [0,0,0];
-        let checkRepeat = 0;
-        while(index[0] === index[1] || index[1] === index[2] || index[0] === index[2]){
-            const { WordList, test } = this.state;
-            const { wordcards } = WordList;
-            const length = wordcards.length;
+        const { WordList, test } = this.state;
+        const { wordcards } = WordList;
+        const length = wordcards.length;
+        let wordcardsADDtt = [];
+        let recordADDmap = [];
+        let countWordCards = 0;
+        for (;countWordCards<length;countWordCards++){
+          const wordcard = wordcards[countWordCards];
+          let countADDtt = 0;
+          let countADDttMax = wordcard.testTime;
+          if(countADDttMax == 0 && wordcard.updateTime == wordcard.inputTime){
+            countADDttMax = length/5;
+          }
+          for(;countADDtt<countADDttMax;countADDtt++){
+            wordcardsADDtt.push(wordcards[countWordCards]);
+            recordADDmap.push(countWordCards);
+          }
+        }
+        const lengthADDtt = wordcardsADDtt.length;
+        let TopicRepeat = true; 
+        while(TopicRepeat){
             for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
-                index[countTestNumber] = Math.floor(Math.random()*length);
+                index[countTestNumber] = Math.floor(Math.random()*lengthADDtt);
             }
+            const name1 = wordcardsADDtt[index[0]].name;
+            const name2 = wordcardsADDtt[index[1]].name;
+            const name3 = wordcardsADDtt[index[2]].name;
+            TopicRepeat = (name1 == name2)?true:
+              (name2 == name3)?true:(name3 == name1)?true:false;
         }
         for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
-            const { WordList, test } = this.state;
-            const { wordcards } = WordList;
             test.splice(countTestNumber,1,{
-              topic: wordcards[index[countTestNumber]].trans,
-              wordcardsTag: index[countTestNumber],
+              topic: wordcardsADDtt[index[countTestNumber]].trans,
+              wordcardsTag: recordADDmap[index[countTestNumber]],
               testID: countTestNumber+1,
               highlightQ: false,
               submitted: false,
-              answer: wordcards[index[countTestNumber]].name,
+              answer: wordcardsADDtt[index[countTestNumber]].name,
               userAns: "",
             })
         }
-        let shouldReloadnew = true;
-        if(this.state.shouldReload)shouldReloadnew = false;
         this.setState({
             test: test,
             score: 0
@@ -242,7 +280,7 @@ class WordReview_Trans extends Component {
                 <h4 className="test-foot">Score: {score}</h4>
                 <div className="test-foot">    
                     <button type="button" className="btn btn-success" onClick = {this.handleTransScore.bind(this)}>submit</button> &nbsp;
-                    <button type="button" className="btn btn-danger" onClick = ''> Reset </button> &nbsp;
+                    <button type="button" className="btn btn-danger" onClick = {this.reloadTest.bind(this)}> Reset </button> ;
                     <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
                 </div>
             </div>
