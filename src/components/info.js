@@ -36,22 +36,26 @@ class info extends Component {
                     <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
                         Review</button></Link>
                 </div>
+                <h3 className="info-article">Welcome to 'My E-Dictionary !'</h3>
+                <section>
+                    <p className='info-inline-1'>Studying for vocabulary words can be interesting !</p>
+                    <p className='info-inline-2'>My E-Dictionary can be your best choice! Use it wisely.</p>
+                </section>
                 <div className="row">    
                    <div className="col-md-3"/>
                    <div className="col-md-3 pic-padd-top-one"> 
                         <section><img width="200" height="200" className="img-circle" src="../../public/des1.jpg"/></section>
-                        <div className="profile-yuan">
+                        <div className="profile">
+                            <p>臺大電機三年級</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 蔡睿庭</p>
+                        </div> 
+                   </div>
+                   <div className="col-md-3 pic-padd-top-one">
+                        <section><img width="200" height="200" className="img-circle" src="../../public/des2.jpg"/></section>
+                        <div className="profile">
                             <p>臺大電機三年級</p>
                             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 林圓方</p>
                         </div> 
-                   </div>
-                   <div className="col-md-3 pic-padd-top-two">
-                        <div className="profile-ray">
-                           <p> ＮＴＵＥＥ ＳＥＮＩＯＲ</p>
-                           <p> ＲＵＥＹ-ＴＩＮＧ,ＴＳＡＩ </p>
-                        </div>
-                        
-                        <section><img width="200" height="200" className="img-circle" src="../../public/des2.jpg"/></section>
                    </div>
                    <div className="col-md-3"/>
                 </div>

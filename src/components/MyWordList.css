@@ -12,7 +12,7 @@ input:focus{outline:none}
 }
 
 .homepage-btn-crew {
-    padding-left:300px;
+    padding-left:295px;
     padding-top:10px;
     padding-bottom:10px;
 }
@@ -72,7 +72,7 @@ input:focus{outline:none}
     font-family: sans-serif;
     position: relative;
     top:20px;
-    right:40px;
+    right:30px;
 }
 
 .Trans-title {
@@ -114,7 +114,7 @@ input:focus{outline:none}
 .Select-title {
     color: #0000AA;
     position: relative;
-    padding-left:410px;
+    padding-left:415px;
     font-size: 50px;
     font-family: cursive;
     text-align: justify;
@@ -160,7 +160,7 @@ input:focus{outline:none}
 }
 
 .review-title {
-    padding-left: 420px;
+    padding-left: 430px;
     color: #0000AA;
     position: relative;
     font-size: 50px;
@@ -184,6 +184,8 @@ input:focus{outline:none}
     font-size: 25px;
     font-family: cursive;
     padding-top: 10px;
+    position:relative;
+    right:-28px;
 }
 
 .img {
@@ -196,33 +198,77 @@ input:focus{outline:none}
 
 .pic-padd-top-one {
     position:relative;
-    top:30px;
+    top:50px;
 }
 
-.pic-padd-top-two {
-    position:relative;
-    top:230px;
-}
-
-.profile-yuan {
-    position:relative;
-    top:100px;
-    right:-70px;
+.profile {
     font-family:Microsoft JhengHei;
-    font-size: 30px;
-}
-
-.profile-ray {
-    position:relative;
-    top:-150px;
-    font-family: fantasy;
     font-size: 20px;
+    position: relative;
+    top:20px;
+    right:-15px;
 }
 
 .review-english {
-
+    font-size: 15px;
+    font-family:monospace;
 }
 
 .review-chinese {
+    font-size: 15px;
+}
 
+.review-top-padding {
+    position:relative;
+    top: 30px;
+}
+
+.search-bar {
+    position:center;
+    width: 150px;
+}
+
+.search-change {
+    position: relative;
+    top:-20px;
+}
+
+.search-result {
+    position: relative;
+    left: 20px;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #009FCC;
+}
+
+.list-top-move {
+    padding-top:10px;
+}
+
+.info-article {
+    position: relative;
+    top:20px;
+    padding-left: 385px;
+    font-family:cursive;
+    font-weight:bold;
+}
+
+.info-inline-1 {
+    position: relative;
+    top:20px;
+    bottom:20px;
+    font-size: 20px;
+    font-family:cursive;
+    font-weight:bolder;
+    padding-left:345px;
+}
+
+.info-inline-2 {
+    position: relative;
+    top:20px;
+    bottom:150px;
+    font-size: 20px;
+    font-family:cursive;
+    font-weight:bold;
+    padding-left:328px;
 }
