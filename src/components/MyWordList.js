@@ -126,11 +126,16 @@ class MyWordList extends Component {
           <div className="container">
             <h1 className="homepage-title"><b>My WordList</b></h1>
               <div className="homepage-btn-crew">
-                  <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">Info</button></Link> &nbsp;
-                  <Link to ={'/designer'}><button type="button" className="btn btn-success homepage-btn">Designer</button></Link> &nbsp;
-                  <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">Selection Test</button></Link> &nbsp;
-                  <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">Translation Test</button></Link> &nbsp;
-                  <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">Review</button></Link>
+                  <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">
+                    Info</button></Link> &nbsp;
+                  <Link to ={'/mywordlist'}><button type="button" disabled="disabled" className="btn btn-success homepage-btn">
+                    My Word List</button></Link> &nbsp;
+                  <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">
+                    Selection Test</button></Link> &nbsp;
+                  <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
+                    Translation Test</button></Link> &nbsp;
+                  <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
+                    Review</button></Link>
               </div>
               <form className="homepage-input-instr">
                   <div className="form-group input-btn-crew">   

@@ -129,12 +129,16 @@ class ReviewMode extends Component {
     const {wordcards} = this.state.WordList;
     return (
         <div className="container">
-          <h1 className="homepage-title"><b>Review Time</b></h1>
+          <h1 className="review-title"><b>Review Time</b></h1>
             <div className="homepage-btn-crew">
-                <button type="button" className="btn btn-info homepage-btn">Info</button> &nbsp;
-                <button type="button" className="btn btn-success homepage-btn">Designer</button> &nbsp;
-                <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">Selection Test</button></Link> &nbsp;
-                <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">Translation Test</button></Link> &nbsp;
+                <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">
+                    Info</button></Link> &nbsp;
+                <Link to ={'/mywordlist'}><button type="button" className="btn btn-success homepage-btn">
+                    My Word List</button></Link> &nbsp;
+                <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">
+                    Selection Test</button></Link> &nbsp;
+                <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
+                    Translation Test</button></Link> &nbsp;
                 <Link to ={'/reviewmode'}><button type="button" disabled="disabled "className="btn btn-default btn-change homepage-btn">
                     Review</button></Link>
             </div>

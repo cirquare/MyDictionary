@@ -228,7 +228,7 @@ class WordReview_Trans extends Component {
                 <h1 className="Trans-title"><b>Translation Test</b></h1>
             <div className="homepage-btn-crew">
                 <button type="button" className="btn btn-info homepage-btn">Info</button> &nbsp;
-                <button type="button" className="btn btn-success homepage-btn">Designer</button> &nbsp;
+                <Link to ={'/mywordlist'}><button type="button" className="btn btn-success homepage-btn">My Word List</button></Link> &nbsp;
                 <Link to ={'/wordreview'}><button type="button" className="btn btn-warning homepage-btn">Selection Test</button></Link> &nbsp;
                 <Link to ={'/wordreview_trans'}><button type="button" disabled="disabled"className="btn btn-danger homepage-btn">
                     Translation Test</button></Link> &nbsp;
@@ -238,12 +238,11 @@ class WordReview_Trans extends Component {
                 <small className="Trans-subtitle">Please fill the correct translation to the following words.</small>
                 <br/><br/>
                     <section>{test.map(this.handleTransTest,this)}</section>
-                <br/><br/>
+                <br/>
                 <h4 className="test-foot">Score: {score}</h4>
                 <div className="test-foot">    
                     <button type="button" className="btn btn-success" onClick = {this.handleTransScore.bind(this)}>submit</button> &nbsp;
                     <button type="button" className="btn btn-danger" onClick = ''> Reset </button> &nbsp;
-                    <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
                 </div>
             </div>
         );

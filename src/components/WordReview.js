@@ -243,13 +243,14 @@ class WordReview extends Component {
             <div className="homepage-btn-crew">
                 <Link to ={'/info'}><button type="button" className="btn btn-info homepage-btn">
                     Info</button></Link> &nbsp;
-                <Link to ={'/designer'}><button type="button" className="btn btn-success homepage-btn">
-                    Designer</button></Link> &nbsp;
+                <Link to ={'/mywordlist'}><button type="button" className="btn btn-success homepage-btn">
+                    My Word List</button></Link> &nbsp;
                 <Link to ={'/wordreview'}><button type="button" disabled="disabled"className="btn btn-warning homepage-btn">
                     Selection Test</button></Link> &nbsp;
                 <Link to ={'/wordreview_trans'}><button type="button" className="btn btn-danger homepage-btn">
                     Translation Test</button></Link> &nbsp;
-                <button type="button" className="btn btn-default btn-change homepage-btn">Contact Us</button> 
+                <Link to ={'/reviewmode'}><button type="button" className="btn btn-default btn-change homepage-btn">
+                    Review</button></Link>
             </div>
             <br/>
           <small className="Select-subtitle">Please select the correct translation to the following words.</small> <br></br>
@@ -258,7 +259,6 @@ class WordReview extends Component {
             <div className="test-foot">
                 <button type = "button" className = "btn btn-success" onClick = {this.handleScore.bind(this)}>submit</button> &nbsp;
                 <Link to ={'/wordreview'}><button type="button" className="btn btn-danger" onClick =""> Reset </button></Link> &nbsp;
-                <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
             </div>
         </div>
         );
