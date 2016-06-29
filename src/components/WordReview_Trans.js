@@ -13,7 +13,7 @@ class WordReview_Trans extends Component {
         this.state = {
             WordList: {wordcards:[]},
             test: [],
-            score: 0,
+            score: 0
         };
     }
 
@@ -50,6 +50,39 @@ class WordReview_Trans extends Component {
                 })
             })
         }
+    }
+    reloadTest(){
+        let countTestNumber = 0;
+        let countSelection = 0;
+        let index = [0,0,0];
+        let checkRepeat = 0;
+        while(index[0] === index[1] || index[1] === index[2] || index[0] === index[2]){
+            const { WordList, test } = this.state;
+            const { wordcards } = WordList;
+            const length = wordcards.length;
+            for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
+                index[countTestNumber] = Math.floor(Math.random()*length);
+            }
+        }
+        for (countTestNumber = 0; countTestNumber<3; countTestNumber++){
+            const { WordList, test } = this.state;
+            const { wordcards } = WordList;
+            test.splice(countTestNumber,1,{
+              topic: wordcards[index[countTestNumber]].trans,
+              wordcardsTag: index[countTestNumber],
+              testID: countTestNumber+1,
+              highlightQ: false,
+              submitted: false,
+              answer: wordcards[index[countTestNumber]].name,
+              userAns: "",
+            })
+        }
+        let shouldReloadnew = true;
+        if(this.state.shouldReload)shouldReloadnew = false;
+        this.setState({
+            test: test,
+            score: 0
+        })
     }
 
     handleTransTest(test,i){
@@ -209,7 +242,7 @@ class WordReview_Trans extends Component {
                 <h4 className="test-foot">Score: {score}</h4>
                 <div className="test-foot">    
                     <button type="button" className="btn btn-success" onClick = {this.handleTransScore.bind(this)}>submit</button> &nbsp;
-                    <button type="button" className="btn btn-danger" onClick =""> Reset </button> &nbsp;
+                    <button type="button" className="btn btn-danger" onClick = ''> Reset </button> &nbsp;
                     <Link to ={'/mywordlist'}><button type="button" className="btn btn-info">Back to List</button></Link>
                 </div>
             </div>
