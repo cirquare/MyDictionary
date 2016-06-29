@@ -78,14 +78,15 @@ class MyWordList extends Component {
       let nowString = date.format(now,'YYYY/MM/DD HH:mm:ss');
       for(;countWordCards<=countLength;countWordCards++){
         if(countWordCards<=countLength-1){
+          const {name,trans,testTime,number,updateTime,inputTime} = WordList.wordcards[countWordCards-1];
           WordList.wordcards.splice(countWordCards-1,1,{
-            name: WordList.wordcards[countWordCards-1].name,
-            trans: WordList.wordcards[countWordCards-1].trans,
-            testTime: WordList.wordcards[countWordCards-1].testTime,
-            number: WordList.wordcards[countWordCards-1].number,
+            name: name,
+            trans: trans,
+            testTime: testTime,
+            number: number,
             total: countLength,
-            updateTime: nowString,
-            inputTime: nowString
+            updateTime: updateTime,
+            inputTime: inputTime
           })
         }else{
           WordList.wordcards.splice(countWordCards-1,0,{
