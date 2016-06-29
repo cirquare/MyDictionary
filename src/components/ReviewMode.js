@@ -12,8 +12,8 @@ class ReviewMode extends Component {
     super(props, context);
     this.state = {
       WordList: {wordcards:[]},
-      TopTenTTList: {toptenttcards:[]},
-      NewTenList: {newtencards:[]}  
+      TopTenCards: [],
+      NewTenCards: []  
     };
   }
   
@@ -51,6 +51,11 @@ class ReviewMode extends Component {
         topten.push(temp.wordcards[cnt]);
         newten.push(temp.wordcards[cnt]);
     } //top ten,new ten init array
+
+    console.log("TYPETEN");
+    console.log(typeof(topten));
+    console.log("TEMPPP");
+    console.log(typeof(temp));
 
     qsort(arr, function(a,b){
         var at = 0;
@@ -98,8 +103,8 @@ class ReviewMode extends Component {
 
     this.setState({
         WordList:temp,
-        TopTenTTList:topten,
-        NewTenList:newten
+        TopTenCards:topten,
+        NewTenCards:newten
     });
   }
   
@@ -127,6 +132,7 @@ class ReviewMode extends Component {
 
   render() {
     const {wordcards} = this.state.WordList;
+    const {TopTenCards, NewTenCards} = this.state;
     return (
         <div className="container">
           <h1 className="review-title"><b>Review Time</b></h1>
@@ -143,10 +149,12 @@ class ReviewMode extends Component {
                     Review</button></Link>
             </div>
             <div className="row">
-              <div className="col-md-8">.col-md-8</div>
-              <div className="col-md-4">.col-md-4</div>
+              <div className="col-md-3"></div> 
+              <div className="col-md-4"> Top Ten Difficult 
+                    {TopTenCards.map(this.handleWordList.bind(this))}</div>
+              <div className="col-md-5"> Top Ten New 
+                    {NewTenCards.map(this.handleWordList.bind(this))}</div>
             </div>
-            {wordcards.map(this.handleWordList.bind(this))}   
         </div>
         );
   }
